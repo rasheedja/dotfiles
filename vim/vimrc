@@ -1,0 +1,112 @@
+" Colours {{{
+
+colorscheme badwolf 
+syntax enable
+
+" }}}
+
+" Tabs {{{
+
+set tabstop=4 " Display tabs as 4 spaces
+set softtabstop=4 " Display new tabs as 4 spaces
+set expandtab " Tab to space
+filetype indent on " allows different indentation rules for different file types
+
+" }}}
+
+" Misc {{{
+
+set number " line numbers
+set showcmd
+set cursorline " highlights the current line
+set lazyredraw
+set wildmenu " visual autocomplete
+
+" highlight last inserted text
+nnoremap gV `[v`
+
+" }}}
+
+" Searches {{{
+
+set showmatch " highlight matches brackets
+set incsearch " search while typing
+set hlsearch " highlight search matches
+
+" ,<space> to stop highlighting search matches
+nnoremap <leader><space> :nohlsearch<CR> 
+
+" }}}
+
+" Folding {{{
+
+set foldenable " allow folding (hiding) parts of files
+set foldlevelstart=10 " hide parts of filds that are 10 levels deep
+set foldnestmax=10 " max of 10 nested folds
+
+" space open/closes folds
+nnoremap <space> za
+
+set foldmethod=indent   " fold based on indent level
+
+" }}}
+
+" Line Shortcuts {{{
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" }}}
+
+" Leader Shortcuts {{{
+
+let mapleader=","       " leader is comma
+
+" toggle gundo, graphical undo
+nnoremap <leader>u :GundoToggle<CR>
+
+" save session, re-open with vim -S
+nnoremap <leader>s :mksession<CR>
+
+" }}}
+
+" Auto Groups {{{
+augroup configgroup
+    autocmd!
+    autocmd VimEnter * highlight clear SignColumn
+    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
+                \:call <SID>StripTrailingWhitespaces()
+    autocmd FileType java setlocal noexpandtab
+    autocmd FileType java setlocal list
+    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType php setlocal expandtab
+    autocmd FileType php setlocal list
+    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType ruby setlocal tabstop=2
+    autocmd FileType ruby setlocal shiftwidth=2
+    autocmd FileType ruby setlocal softtabstop=2
+    autocmd FileType ruby setlocal commentstring=#\ %s
+    autocmd FileType python setlocal commentstring=#\ %s
+    autocmd BufEnter *.cls setlocal filetype=java
+    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+    autocmd BufEnter Makefile setlocal noexpandtab
+    autocmd BufEnter *.sh setlocal tabstop=2
+    autocmd BufEnter *.sh setlocal shiftwidth=2
+    autocmd BufEnter *.sh setlocal softtabstop=2
+augroup END
+" }}}
+
+" Backups {{{
+" move backups to tmp
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
+ " }}}
+
+" vim:foldmethod=marker:foldlevel=0
+
