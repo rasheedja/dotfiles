@@ -1,0 +1,8 @@
+#!/bin/bash
+# Quick setup on a fresh install of Ubuntu (16.04) with the programs I normally use
+
+sudo apt install vim zsh network-manager-openvpn-gnome terminator htop curl
+curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/vim/vimrc > ~/.vimrc
+curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/zsh/zshrc > ~/.zshrc
+curl -sSL https://get.haskellstack.org/ | sh
+chsh -s $(which zsh)
