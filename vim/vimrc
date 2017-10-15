@@ -1,6 +1,5 @@
 " Colours {{{
 
-colorscheme badwolf 
 syntax enable
 
 " }}}
