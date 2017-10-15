@@ -4,5 +4,6 @@
 sudo apt install vim zsh network-manager-openvpn-gnome terminator htop curl
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/vim/vimrc > ~/.vimrc
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/zsh/zshrc > ~/.zshrc
+curl -L git.io/antigen > ~/.antigen.zsh
 curl -sSL https://get.haskellstack.org/ | sh
 chsh -s $(which zsh)
