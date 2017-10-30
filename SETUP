@@ -2,7 +2,7 @@
 # Quick setup on a fresh install of Ubuntu (16.04) with the programs I normally use
 
 cd ~
-sudo apt-get -y install vim zsh network-manager-openvpn-gnome terminator htop curl tmux
+sudo apt-get -y install vim zsh network-manager-openvpn-gnome terminator htop curl tmux gnucash gdebi synaptic redshift-gtk
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/vim/vimrc > ~/.vimrc
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/zsh/zshrc > ~/.zshrc
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/terminator/unity/config > ~/.config/terminator/config
