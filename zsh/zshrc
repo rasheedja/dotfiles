@@ -43,3 +43,5 @@ antigen apply
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 
+# Export TERM
+export TERM=xterm-256color
