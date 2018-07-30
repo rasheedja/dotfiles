@@ -2,12 +2,10 @@
 # Quick setup on a fresh install of Ubuntu (16.04) with the programs I normally use
 
 cd ~
-sudo apt-get -y install vim zsh network-manager-openvpn-gnome terminator htop curl tmux gdebi synaptic redshift-gtk vagrant virtualbox git
+sudo apt-get -y install vim zsh htop curl tmux vagrant virtualbox git
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/vim/vimrc > ~/.vimrc
 curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/zsh/zshrc > ~/.zshrc
-curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/terminator/unity/config > ~/.config/terminator/config
 curl -L git.io/antigen > ~/.antigen.zsh
-curl -sSL https://get.haskellstack.org/ | sh
 git clone https://github.com/powerline/fonts.git --depth=1
 cd fonts
 ./install.sh
