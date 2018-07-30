@@ -1,2 +1,5 @@
 # dotfiles
-dotfiles I use
+Quick setup:
+```
+curl https://raw.githubusercontent.com/rasheedja/dotfiles/master/SETUP | bash
+```
