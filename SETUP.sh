@@ -2,9 +2,9 @@
 cd ~
 
 # Install packages
-sudo apt-get -y install vim zsh htop curl tmux git papirus-icon-theme evolution evolution-ews steam steam-devices
-sudo snap install communitheme
-sudo snap install --classic vscode
+sudo apt-get -y install vim zsh htop curl tmux git papirus-icon-theme evolution evolution-ews steam steam-devices gcc make
+# sudo snap install communitheme
+# sudo snap install --classic vscode
 
 # Change default shell to zsh
 chsh -s $(which zsh)
