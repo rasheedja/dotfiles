@@ -45,3 +45,10 @@ alias zshrc="vim ~/.zshrc"
 
 # Export TERM
 export TERM=xterm-256color
+
+# Add GPS to path
+path+=('/home/junaid/Research/opt/GNAT/2018/bin')
+
+# Add Isabelle to path
+path+=('/home/junaid/Research/opt/Isabelle2018/bin')
+
