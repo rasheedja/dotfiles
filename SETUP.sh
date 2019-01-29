@@ -2,7 +2,7 @@
 cd ~
 
 # Install packages
-sudo apt-get -y install vim zsh htop curl tmux git steam steam-devices gcc make terminator
+sudo apt-get -y install vim zsh htop curl tmux git gcc make terminator zim texstudio
 
 # Change default shell to zsh
 chsh -s $(which zsh)
