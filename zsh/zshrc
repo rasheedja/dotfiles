@@ -52,3 +52,6 @@ path+=('/home/junaid/Research/opt/GNAT/2018/bin')
 # Add Isabelle to path
 path+=('/home/junaid/Research/opt/Isabelle2018/bin')
 
+# Add local bin
+path+=('/home/junaid/.local/bin')
+
