@@ -1,26 +1,30 @@
 #!/bin/bash
-cd ~
+# Switch to directory that the script is in
+cd "$(dirname "$0")" || exit 1
 
 # Install packages
-sudo apt-get -y install vim zsh htop curl tmux git gcc make terminator zim texstudio
+sudo apt-get -y install vim zsh htop curl tmux git gcc make
+snap install emacs --classic
 
 # Change default shell to zsh
-chsh -s $(which zsh)
-
-# Clone dotfiles repo
-mkdir -p ~/Documents/git
-cd ~/Documents/git
-git clone git@github.com:rasheedja/dotfiles.git
+chsh -s "$(which zsh)"
 
 # Create symlinks for config files
-ln -sfr dotfiles/vim/vimrc ~/.vimrc
-ln -sfr dotfiles/zsh/zshrc ~/.zshrc
-ln -sfr dotfiles/tmux/tmux.conf ~/.tmux.conf
+ln -sfr vim/vimrc ~/.vimrc
+ln -sfr zsh/zshrc ~/.zshrc
+ln -sfr tmux/tmux.conf ~/.tmux.conf
+
+## Doom
+mkdir -p ~/.config/doom/
+ln -sfr doom/init.el ~/.config/doom/init.el
+ln -sfr doom/packages.el ~/.config/doom/packages.el
+ln -sfr doom/config.el ~/.config/doom/config.el
+ln -sfr doom/custom.el ~/.config/doom/custom.el
 
 # Install antigen
-curl -L git.io/antigen > ~/.antigen.zsh
+curl -L git.io/antigen >~/.antigen.zsh
 
 # Install powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
-source fonts/install.sh
+bash ./fonts/install.sh
 rm -rf fonts
