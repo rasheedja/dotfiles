@@ -55,3 +55,8 @@ path+=('/home/junaid/Research/opt/Isabelle2018/bin')
 # Add local bin
 path+=('/home/junaid/.local/bin')
 
+# Add ghcup to path
+path+=('/home/junaid/.ghcup/bin')
+
+# Add cabal bin to path
+path+=('/home/junaid/.cabal/bin')
