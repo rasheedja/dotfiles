@@ -207,7 +207,7 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-file-register
    consult--source-recent-file consult--source-project-recent-file
-   consult--source-buffer :hidden t :default nil
+   ;; consult--source-buffer :hidden t :default nil
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
   
@@ -349,6 +349,7 @@
   (setq dashboard-icon-type 'nerd-icons)
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
+  (setq dashboard-projects-backend 'projectile)
   (setq dashboard-projects-switch-function 'projectile-persp-switch-project)
   (setq dashboard-display-icons-p t)
   (setq dashboard-items '((recents   . 5)
