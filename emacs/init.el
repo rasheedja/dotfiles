@@ -368,6 +368,13 @@
 ;;; treesitter
 (use-package tree-sitter-langs)
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 ;;; haskell
 (use-package haskell-mode
   :hook (haskell-mode . tree-sitter-hl-mode))
@@ -382,6 +389,7 @@
   :hook (
          (haskell-mode . lsp)
 	 (haskell-literate-mode . lsp)
+	 (typescript-ts-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
