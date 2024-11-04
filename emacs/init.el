@@ -47,6 +47,23 @@
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (setq display-line-numbers 'relative)
+
+  ;; File protection
+  (defvar backups-dir (concat user-emacs-directory "backups/"))
+  (defvar autosaves-dir (concat user-emacs-directory "autosaves/"))
+  (defvar locks-dir (concat user-emacs-directory "locks/"))
+
+  (dolist (dir (list user-emacs-directory
+		     backups-dir autosaves-dir locks-dir))
+    (unless (file-exists-p dir)
+      (make-directory dir t)))
+  
+  (setq backup-directory-alist
+        `(("." . ,backups-dir)))
+  (setq auto-save-file-name-transforms
+	`((".*" ,autosaves-dir t)))
+  (setq lock-file-name-transforms
+	`((".*" ,locks-dir t)))
   :config
   (delete-selection-mode)
   (load-theme 'modus-vivendi)
