@@ -49,7 +49,8 @@
   (setq display-line-numbers 'relative)
   :config
   (delete-selection-mode)
-  (scroll-bar-mode 1)
+  (load-theme 'modus-vivendi)
+  (scroll-bar-mode -1)
   :bind
   ("C-<return>" . insert-line-below)
   ("C-S-<return>" . insert-line-above)
@@ -325,21 +326,11 @@
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-one t)
-  (doom-themes-visual-bell-config))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-minor-modes t)
   (doom-modeline-total-line-number t)
   :hook (after-init . doom-modeline-mode))
-
-(use-package solaire-mode
-  :after (doom-themes dashboard)
-  :hook (dashboard-before-initialize . solaire-mode)
-  :config (solaire-global-mode 1))
 
 (use-package dashboard
   :after
