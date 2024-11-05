@@ -281,6 +281,16 @@
 ;; vc
 (use-package magit)
 
+(use-package diff-hl
+  :after (magit)
+  :config
+  (global-diff-hl-mode)
+  (diff-hl-dired-mode)
+  (diff-hl-flydiff-mode)
+  (diff-hl-show-hunk-mouse-mode)
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+
 ;; Projects/Workspaces
 (use-package perspective
   :demand t
