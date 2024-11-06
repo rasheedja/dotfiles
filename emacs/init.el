@@ -129,6 +129,8 @@
   :config
   (global-corfu-mode))
 
+;; Tools
+
 ;; Example configuration for Consult
 (use-package consult
   :demand t
@@ -277,6 +279,10 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package vterm)
+
+(use-package multi-vterm)
 
 ;; vc
 (use-package magit)
