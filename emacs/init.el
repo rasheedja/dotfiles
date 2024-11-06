@@ -68,6 +68,7 @@
   (delete-selection-mode)
   (load-theme 'modus-vivendi)
   (scroll-bar-mode -1)
+  (column-number-mode 't)
   :bind
   ("C-<return>" . insert-line-below)
   ("C-S-<return>" . insert-line-above)
