@@ -46,7 +46,7 @@
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
-  (setq display-line-numbers 'relative)
+  (setq display-line-numbers-type 'relative)
 
   ;; File protection
   (defvar backups-dir (concat user-emacs-directory "backups/"))
