@@ -232,8 +232,6 @@
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
   
-  (add-to-list 'consult-buffer-sources persp-consult-source)
-  
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; "C-+"
@@ -299,19 +297,25 @@
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 ;; Projects/Workspaces
-(use-package perspective
-  :demand t
-  :bind (("C-x b" . persp-switch-to-buffer*)
-         ("C-x k" . persp-kill-buffer*))
-  :custom
-  (persp-mode-prefix-key (kbd "C-c w"))
-  :config
-  (persp-mode))
+(use-package activities
+  :init
+  (activities-mode)
+  (activities-tabs-mode)
+  ;; Prevent `edebug' default bindings from interfering.
+  (setq edebug-inhibit-emacs-lisp-mode-bindings t)
 
-(use-package persp-projectile)
+  :bind
+  (("C-c C-a C-n" . activities-new)
+   ("C-c C-a C-d" . activities-define)
+   ("C-c C-a C-a" . activities-resume)
+   ("C-c C-a C-s" . activities-suspend)
+   ("C-c C-a C-k" . activities-kill)
+   ("C-c C-a RET" . activities-switch)
+   ("C-c C-a b" . activities-switch-buffer)
+   ("C-c C-a g" . activities-revert)
+   ("C-c C-a l" . activities-list)))
 
 (use-package projectile
-  :after (perspective persp-projectile)
   :demand t
   :init
   (projectile-mode +1)
@@ -325,10 +329,6 @@
 
 (use-package treemacs-magit
   :after (treemacs magit))
-
-(use-package treemacs-perspective
-  :after (treemacacs perspective)
-  :config (treemacs-set-scope-type 'Perspectives))
 
 ;; UI/UX
 (use-package ace-window
@@ -368,14 +368,13 @@
 
 (use-package dashboard
   :after
-  (nerd-icons persp-projectile projectile)
+  (nerd-icons projectile)
   :init
   (setq dashboard-center-content t)
   (setq dashboard-icon-type 'nerd-icons)
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-projects-backend 'projectile)
-  (setq dashboard-projects-switch-function 'projectile-persp-switch-project)
   (setq dashboard-display-icons-p t)
   (setq dashboard-items '((recents   . 5)
                           (projects . 5)
