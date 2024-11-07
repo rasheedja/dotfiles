@@ -421,6 +421,8 @@
          (haskell-mode . lsp)
 	 (haskell-literate-mode . lsp)
 	 (typescript-ts-mode . lsp)
+	 (javascript-mode . lsp)
+	 (yaml-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
