@@ -31,7 +31,7 @@
     (interactive)
     (move-end-of-line 1)
     (newline-and-indent))
-    
+  
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
   (defun crm-indicator (args)
@@ -81,7 +81,7 @@
   :hook
   (minibuffer-setup . cursor-intangible-mode)
   (prog-mode . display-line-numbers-mode))
-  
+
 ;; Checkers
 (use-package flycheck
   :hook
@@ -131,6 +131,12 @@
   (global-corfu-mode))
 
 ;; Tools
+
+;; Autosave
+(use-package apheleia
+  :config
+  (setq apheleia-formatters-respect-indent-level 'nil)
+  (apheleia-global-mode +1))
 
 ;; Example configuration for Consult
 (use-package consult
@@ -239,7 +245,7 @@
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
-)
+  )
 
 (use-package embark
   :demand t
