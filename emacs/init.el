@@ -494,6 +494,14 @@
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
+(use-package consult-lsp
+  :after (consult lsp-mode)
+  :bind
+  (:map lsp-mode-map
+	("C-c c c d" . consult-lsp-diagnostics)
+	("C-c c c r" . consult-lsp-references)
+	("C-c c c s" . consult-lsp-symbols)))
+
 (use-package lsp-ui :commands lsp-ui-mode)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
