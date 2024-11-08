@@ -248,6 +248,11 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
+;; direnv
+(use-package direnv
+  :config
+  (direnv-mode))
+
 (use-package embark
   :demand t
   :bind
