@@ -479,19 +479,26 @@
   :hook (haskell-mode . tree-sitter-hl-mode))
 
 (use-package lsp-haskell
-  :after lsp-mode)
+  :after lsp-mode
+  :custom
+  (lsp-haskell-formatting-provider "fourmolu"))
 
 ;;; lsp
 (use-package lsp-mode
   :init
   (setq lsp-keymap-prefix "C-c c")
+
+  (defun format-haskell-buffer ()
+    (when (or (eq major-mode 'haskell-mode) (eq major-mode 'haskell-literate-mode))
+      (lsp-format-buffer)))
   :hook (
          (haskell-mode . lsp)
 	 (haskell-literate-mode . lsp)
 	 (typescript-ts-mode . lsp)
 	 (javascript-mode . lsp)
 	 (yaml-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+         (lsp-mode . lsp-enable-which-key-integration)
+	 (before-save . format-haskell-buffer))
   :commands lsp)
 
 (use-package consult-lsp
