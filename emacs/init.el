@@ -143,6 +143,7 @@
 ;; Example configuration for Consult
 (use-package consult
   :demand t
+  :after (projectile)
   ;; Replace bindings. Lazily loaded by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
          ("C-c M-x" . consult-mode-command)
@@ -327,10 +328,17 @@
    ("C-c a g" . activities-revert)
    ("C-c a l" . activities-list)))
 
-(use-package project
-  :bind-keymap ("C-c p" . project-prefix-map))
+(use-package projectile
+  :demand t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map)))
 
 (use-package treemacs)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
 
 (use-package treemacs-magit
   :after (treemacs magit))
@@ -443,12 +451,13 @@
 
 (use-package dashboard
   :after
-  (nerd-icons)
+  (nerd-icons projectile)
   :init
   (setq dashboard-center-content t)
   (setq dashboard-icon-type 'nerd-icons)
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
+  (setq dashboard-projects-backend 'projectile)
   (setq dashboard-display-icons-p t)
   (setq dashboard-items '((recents   . 5)
                           (projects . 5)
