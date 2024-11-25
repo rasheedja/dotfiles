@@ -449,7 +449,7 @@
 
 (use-package dashboard
   :after
-  (nerd-icons projectile)
+  (nerd-icons projectile org)
   :init
   (setq dashboard-center-content t)
   (setq dashboard-icon-type 'nerd-icons)
@@ -458,8 +458,9 @@
   (setq dashboard-projects-backend 'projectile)
   (setq dashboard-display-icons-p t)
   (setq dashboard-items '((recents   . 5)
-                          (projects . 5)
-                          (bookmarks  . 5)))
+			  (agenda . 5)
+                          (bookmarks  . 5)
+                          (projects . 5)))
   (setq dashboard-startupify-list '(dashboard-insert-banner
 				    dashboard-insert-newline
 				    dashboard-insert-banner-title
@@ -471,6 +472,60 @@
   (dashboard-setup-startup-hook))
 
 ;; lang
+;;; org
+(use-package org
+  :init
+  (defun insert-created-date(&rest ignore)
+    (insert (format-time-string
+	     (concat "\nCREATED: ["
+		     (cdr org-time-stamp-formats)
+		     "]")
+	     ))
+    (org-back-to-heading) ; in org-capture, this folds the entry; when inserting a heading, this moves point back to the heading line
+    (move-end-of-line()) ; when inserting a heading, this moves point to the end of the line
+    )
+
+					; hook it to adding headings with M-S-RET
+					; do not add this to org-insert-heading-hook, otherwise this also works in non-TODO items
+					; and Org-mode has no org-insert-todo-heading-hook
+  (advice-add 'org-insert-todo-heading :after #'insert-created-date)
+  :hook
+  (org-capture-before-finalize . insert-created-date) ; add CREATED property to captured entries
+  (org-mode . auto-fill-mode)
+  (org-mode . org-indent-mode)
+  ;; (org-agenda-finalize . org-agenda-log-mode)
+  :custom
+  (org-agenda-files (list (file-truename "~/org/agenda/")))
+  (org-enforce-todo-dependencies t)
+  (org-enforce-todo-checkbox-dependencies t)
+  :config
+  (setq org-log-done 'time)
+  :bind
+  ("C-c o l" . org-store-link)
+  ("C-c o a" . org-agenda)
+  ("C-c o c" . org-capture))
+
+(use-package org-roam
+  :custom
+  (org-roam-directory (file-truename "~/org/roam/"))
+  :bind (("C-c o r l" . org-roam-buffer-toggle)
+         ("C-c o r f" . org-roam-node-find)
+         ("C-c o r g" . org-roam-graph)
+         ("C-c o r i" . org-roam-node-insert)
+         ("C-c o r c" . org-roam-capture))
+  :config
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  (require 'org-roam-protocol))
+
+(use-package org-journal
+  :init
+  (setq org-journal-prefix-key "C-c o j")
+  :custom
+  (org-journal-file-type 'yearly)
+  (org-journal-dir (file-truename "~/org/journal/"))
+  (org-journal-file-format "%F.org"))
+
 ;;; treesitter
 (use-package tree-sitter-langs)
 
