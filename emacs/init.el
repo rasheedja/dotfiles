@@ -292,9 +292,7 @@
   :config
   (which-key-mode))
 
-(use-package vterm)
-
-(use-package multi-vterm)
+(use-package eat)
 
 ;; vc
 (use-package magit)
