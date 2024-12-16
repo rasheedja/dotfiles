@@ -76,6 +76,7 @@
   ("C-S-<return>" . insert-line-above)
   :custom
   (enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode t)
   ;; Hide commands in M-x which do not work in the current mode
   (read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
