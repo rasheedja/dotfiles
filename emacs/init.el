@@ -474,23 +474,7 @@
 ;; lang
 ;;; org
 (use-package org
-  :init
-  (defun insert-created-date(&rest ignore)
-    (insert (format-time-string
-	     (concat "\nCREATED: ["
-		     (cdr org-time-stamp-formats)
-		     "]")
-	     ))
-    (org-back-to-heading) ; in org-capture, this folds the entry; when inserting a heading, this moves point back to the heading line
-    (move-end-of-line()) ; when inserting a heading, this moves point to the end of the line
-    )
-
-					; hook it to adding headings with M-S-RET
-					; do not add this to org-insert-heading-hook, otherwise this also works in non-TODO items
-					; and Org-mode has no org-insert-todo-heading-hook
-  (advice-add 'org-insert-todo-heading :after #'insert-created-date)
   :hook
-  (org-capture-before-finalize . insert-created-date) ; add CREATED property to captured entries
   (org-mode . auto-fill-mode)
   (org-mode . org-indent-mode)
   ;; (org-agenda-finalize . org-agenda-log-mode)
