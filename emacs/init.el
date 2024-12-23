@@ -541,6 +541,8 @@
 	 (javascript-mode . lsp)
 	 (yaml-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
+  :custom
+  (lsp-completion-provider :none)
   :commands lsp)
 
 (use-package consult-lsp
