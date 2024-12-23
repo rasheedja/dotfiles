@@ -480,7 +480,11 @@
   (org-mode . org-indent-mode)
   ;; (org-agenda-finalize . org-agenda-log-mode)
   :custom
-  (org-agenda-files (list (file-truename "~/org/agenda/")))
+  (org-agenda-files (list
+		     (file-truename "~/org/agenda/")
+		     (file-truename "~/org/agenda/projects/")))
+  (org-agenda-show-future-repeats 'nil)
+  (org-agenda-start-with-log-mode t)
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
   :config
