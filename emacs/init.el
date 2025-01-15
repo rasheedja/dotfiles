@@ -296,7 +296,9 @@
 (use-package eat)
 
 ;; vc
-(use-package magit)
+(use-package magit
+  :bind
+  ("C-c g" . magit-status))
 
 (use-package diff-hl
   :after (magit)
