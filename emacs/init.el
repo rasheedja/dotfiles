@@ -138,7 +138,6 @@
 ;; Autosave
 (use-package apheleia
   :config
-  (setq apheleia-formatters-respect-indent-level 'nil)
   (apheleia-global-mode +1))
 
 ;; Example configuration for Consult
