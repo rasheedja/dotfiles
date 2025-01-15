@@ -540,15 +540,15 @@
   :init
   (setq lsp-keymap-prefix "C-c c")
   :hook (
-         (haskell-mode . lsp)
-	 (haskell-literate-mode . lsp)
-	 (typescript-ts-mode . lsp)
-	 (javascript-mode . lsp)
-	 (yaml-mode . lsp)
+         (haskell-mode . lsp-deferred)
+	 (haskell-literate-mode . lsp-deferred)
+	 (typescript-ts-mode . lsp-deferred)
+	 (javascript-mode . lsp-deferred)
+	 (yaml-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-completion-provider :none)
-  :commands lsp)
+  :commands (lsp lsp-deferred))
 
 (use-package consult-lsp
   :after (consult lsp-mode)
