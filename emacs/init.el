@@ -249,6 +249,17 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
+;; multi cursor
+(use-package multiple-cursors
+  :bind
+  ("C-c e m" . mc/edit-lines)
+  ("C-c e n" . mc/mark-next-like-this)
+  ("C-c e p" . mc/mark-previous-like-this)
+  ("C-c e a" . mc/mark-all-like-this)
+  ("C-c e r" . mc/mark-all-in-region)
+  ("C-c e s" . mc/mark-sgml-tag-pair)
+  ("C-c e d" . mc/mark-all-like-this-dwim))
+
 ;; direnv
 (use-package direnv
   :config
