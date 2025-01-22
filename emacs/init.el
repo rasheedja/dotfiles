@@ -104,37 +104,19 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  (completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
   :config
   (marginalia-mode))
 
-(use-package corfu
-  ;; Optional customizations
-  :custom
-  (corfu-popupinfo-mode t)       ;; Enable docstring display
-  (corfu-popupinfo-delay 0.5)    ;; Set the delay before the docstring shows
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-separator ?\s)          ;; Orderless field separator
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+(use-package company
+  :hook
+  (after-init . global-company-mode))
 
-  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
-  :config
-  (global-corfu-mode))
+(use-package company-box
+  :hook
+  (company-mode . company-box-mode))
 
 ;; Tools
 
@@ -452,11 +434,6 @@
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
-(use-package nerd-icons-corfu
-  :after (nerd-icons corfu)
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
 (use-package doom-modeline
   :custom
   (doom-modeline-minor-modes t)
@@ -560,8 +537,6 @@
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
-  :custom
-  (lsp-completion-provider :none)
   :commands (lsp lsp-deferred))
 
 (use-package consult-lsp
