@@ -141,11 +141,11 @@
 ;; Autosave
 (use-package apheleia
   :config
+  (setq apheleia-formatters-respect-indent-level 'nil)
   (apheleia-global-mode +1))
 
 ;; Example configuration for Consult
 (use-package consult
-  :demand t
   :after (projectile)
   ;; Replace bindings. Lazily loaded by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
