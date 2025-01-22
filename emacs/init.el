@@ -83,7 +83,8 @@
   (tab-always-indent 'complete)
   :hook
   (minibuffer-setup . cursor-intangible-mode)
-  (prog-mode . display-line-numbers-mode))
+  (prog-mode . display-line-numbers-mode)
+  (org-mode . display-line-numbers-mode))
 
 ;; Checkers
 (use-package flycheck
