@@ -113,6 +113,8 @@
 (use-package corfu
   ;; Optional customizations
   :custom
+  (corfu-popupinfo-mode t)       ;; Enable docstring display
+  (corfu-popupinfo-delay 0.5)    ;; Set the delay before the docstring shows
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
   ;; (corfu-separator ?\s)          ;; Orderless field separator
