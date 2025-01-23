@@ -92,24 +92,7 @@
   (prog-mode . flycheck-mode))
 
 ;; Completion
-(use-package vertico
-  :config
-  (vertico-mode))
-
-(use-package savehist
-  :config
-  (savehist-mode))
-
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
-
-(use-package marginalia
-  :config
-  (marginalia-mode))
-
+;;; main buffer
 (use-package company
   :hook
   (after-init . global-company-mode))
@@ -118,15 +101,21 @@
   :hook
   (company-mode . company-box-mode))
 
-;; Tools
-
-;; Autosave
-(use-package apheleia
+;;; minibuffer
+(use-package savehist
   :config
-  (setq apheleia-formatters-respect-indent-level 'nil)
-  (apheleia-global-mode +1))
+  (savehist-mode))
 
-;; Example configuration for Consult
+(use-package marginalia
+  :config
+  (marginalia-mode))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
 (use-package consult
   :after (projectile)
   ;; Replace bindings. Lazily loaded by `use-package'.
@@ -234,24 +223,7 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
-;; multi cursor
-(use-package multiple-cursors
-  :bind
-  ("C-c e m" . mc/edit-lines)
-  ("C-c e n" . mc/mark-next-like-this)
-  ("C-c e p" . mc/mark-previous-like-this)
-  ("C-c e a" . mc/mark-all-like-this)
-  ("C-c e r" . mc/mark-all-in-region)
-  ("C-c e s" . mc/mark-sgml-tag-pair)
-  ("C-c e d" . mc/mark-all-like-this-dwim))
-
-;; direnv
-(use-package direnv
-  :config
-  (direnv-mode))
-
 (use-package embark
-  :demand t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -283,6 +255,31 @@
   :after (embark consult)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package vertico
+  :config
+  (vertico-mode))
+
+;; Tools
+
+(use-package apheleia
+  :config
+  (setq apheleia-formatters-respect-indent-level 'nil)
+  (apheleia-global-mode +1))
+
+(use-package multiple-cursors
+  :bind
+  ("C-c e m" . mc/edit-lines)
+  ("C-c e n" . mc/mark-next-like-this)
+  ("C-c e p" . mc/mark-previous-like-this)
+  ("C-c e a" . mc/mark-all-like-this)
+  ("C-c e r" . mc/mark-all-in-region)
+  ("C-c e s" . mc/mark-sgml-tag-pair)
+  ("C-c e d" . mc/mark-all-like-this-dwim))
+
+(use-package direnv
+  :config
+  (direnv-mode))
 
 (use-package which-key
   :config
