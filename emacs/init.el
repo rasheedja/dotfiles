@@ -43,11 +43,6 @@
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (setq display-line-numbers-type 'relative)
-
   ;; File protection
   (defvar backups-dir (concat user-emacs-directory "backups/"))
   (defvar autosaves-dir (concat user-emacs-directory "autosaves/"))
@@ -58,12 +53,6 @@
     (unless (file-exists-p dir)
       (make-directory dir t)))
   
-  (setq backup-directory-alist
-        `(("." . ,backups-dir)))
-  (setq auto-save-file-name-transforms
-	`((".*" ,autosaves-dir t)))
-  (setq lock-file-name-transforms
-	`((".*" ,locks-dir t)))
   (add-to-list 'default-frame-alist
                '(font . "Fira Code-12"))
   :config
@@ -75,8 +64,17 @@
   ("C-<return>" . insert-line-below)
   ("C-S-<return>" . insert-line-above)
   :custom
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))
+  (display-line-numbers-type 'relative)
   (enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode t)
+  (backup-directory-alist
+   `(("." . ,backups-dir)))
+  (auto-save-file-name-transforms
+   `((".*" ,autosaves-dir t)))
+  (lock-file-name-transforms
+   `((".*" ,locks-dir t)))
   ;; Hide commands in M-x which do not work in the current mode
   (read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
@@ -178,21 +176,25 @@
 
   ;; The :init configuration is always executed (Not lazy)
   :init
-
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
-
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
 
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+  :custom
+  ;; Optionally configure the register formatting. This improves the register
+  ;; preview for `consult-register', `consult-register-load',
+  ;; `consult-register-store' and the Emacs built-ins.
+  (register-preview-delay 0.5)
+  (register-preview-function #'consult-register-format)
 
+  ;; Use Consult to select xref locations with preview
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (consult-narrow-key "<") ;; "C-+"
+  
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
   :config
@@ -214,10 +216,6 @@
    ;; :preview-key "M-."
    :preview-key '(:debounce 0.4 any))
   
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; "C-+"
-
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
@@ -230,10 +228,6 @@
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
-
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-
   ;; Show the Embark target at point via Eldoc. You may adjust the
   ;; Eldoc strategy, if you want to see the documentation from
   ;; multiple providers. Beware that using this can be a little
@@ -243,6 +237,10 @@
   ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
+  :custom
+  ;; Optionally replace the key help with a completing-read interface
+  (prefix-help-command #'embark-prefix-help-command)
+  
   :config
 
   ;; Hide the mode line of the Embark live/completions buffers
@@ -263,8 +261,9 @@
 ;; Tools
 
 (use-package apheleia
+  :custom
+  (apheleia-formatters-respect-indent-level 'nil)
   :config
-  (setq apheleia-formatters-respect-indent-level 'nil)
   (apheleia-global-mode +1))
 
 (use-package multiple-cursors
@@ -304,12 +303,9 @@
 
 ;; Projects/Workspaces
 (use-package activities
-  :init
+  :config
   (activities-mode)
   (activities-tabs-mode)
-  ;; Prevent `edebug' default bindings from interfering.
-  (setq edebug-inhibit-emacs-lisp-mode-bindings t)
-
   :bind
   (("C-c a n" . activities-new)
    ("C-c a d" . activities-define)
@@ -338,10 +334,9 @@
 
 ;; UI/UX
 (use-package ace-window
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  :config
-  (setq aw-scope 'frame)
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-scope 'frame)
   :bind
   ("C-x o" . ace-window))
 
@@ -440,24 +435,24 @@
 (use-package dashboard
   :after
   (nerd-icons projectile org)
-  :init
-  (setq dashboard-center-content t)
-  (setq dashboard-icon-type 'nerd-icons)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-projects-backend 'projectile)
-  (setq dashboard-display-icons-p t)
-  (setq dashboard-items '((recents   . 5)
-			  (agenda . 5)
-                          (bookmarks  . 5)
-                          (projects . 5)))
-  (setq dashboard-startupify-list '(dashboard-insert-banner
-				    dashboard-insert-newline
-				    dashboard-insert-banner-title
-				    dashboard-insert-newline
-				    dashboard-insert-items
-				    dashboard-insert-newline
-				    dashboard-insert-init-info))
+  :custom
+  (dashboard-center-content t)
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-projects-backend 'projectile)
+  (dashboard-display-icons-p t)
+  (dashboard-items '((recents   . 5)
+		     (agenda . 5)
+                     (bookmarks  . 5)
+                     (projects . 5)))
+  (dashboard-startupify-list '(dashboard-insert-banner
+			       dashboard-insert-newline
+			       dashboard-insert-banner-title
+			       dashboard-insert-newline
+			       dashboard-insert-items
+			       dashboard-insert-newline
+			       dashboard-insert-init-info))
   :config
   (dashboard-setup-startup-hook))
 
@@ -476,8 +471,7 @@
   (org-agenda-start-with-log-mode t)
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
-  :config
-  (setq org-log-done 'time)
+  (org-log-done 'time)
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda)
@@ -497,9 +491,8 @@
   (require 'org-roam-protocol))
 
 (use-package org-journal
-  :init
-  (setq org-journal-prefix-key "C-c o j")
   :custom
+  (org-journal-prefix-key "C-c o j")
   (org-journal-file-type 'yearly)
   (org-journal-dir (file-truename "~/org/journal/"))
   (org-journal-file-format "%F.org"))
@@ -525,8 +518,8 @@
 
 ;;; lsp
 (use-package lsp-mode
-  :init
-  (setq lsp-keymap-prefix "C-c c")
+  :custom
+  (lsp-keymap-prefix "C-c c")
   :hook (
          (haskell-mode . lsp-deferred)
 	 (haskell-literate-mode . lsp-deferred)
