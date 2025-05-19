@@ -48,6 +48,13 @@
   (defvar autosaves-dir (concat user-emacs-directory "autosaves/"))
   (defvar locks-dir (concat user-emacs-directory "locks/"))
 
+  (setq backup-directory-alist
+	`(("." . ,backups-dir)))
+  (setq auto-save-file-name-transforms
+	`((".*" ,autosaves-dir t)))
+  (setq lock-file-name-transforms
+	`((".*" ,locks-dir t)))
+  
   (dolist (dir (list user-emacs-directory
 		     backups-dir autosaves-dir locks-dir))
     (unless (file-exists-p dir)
@@ -69,12 +76,6 @@
   (display-line-numbers-type 'relative)
   (enable-recursive-minibuffers t)
   (minibuffer-depth-indicate-mode t)
-  (backup-directory-alist
-   `(("." . ,backups-dir)))
-  (auto-save-file-name-transforms
-   `((".*" ,autosaves-dir t)))
-  (lock-file-name-transforms
-   `((".*" ,locks-dir t)))
   ;; Hide commands in M-x which do not work in the current mode
   (read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
