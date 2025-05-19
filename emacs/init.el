@@ -285,7 +285,9 @@
   :config
   (which-key-mode))
 
-(use-package eat)
+(if (eq system-type 'windows-nt)
+    (use-package eat)
+  (use-package vterm))
 
 ;; vc
 (use-package magit
