@@ -557,3 +557,10 @@
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode)
+
+;; LLM
+(use-package aidermacs
+  :bind (("C-c v" . aidermacs-transient-menu))
+  :custom
+  (aidermacs-use-architect-mode t)
+  (aidermacs-default-model "openai/o4-mini"))
