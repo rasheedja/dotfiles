@@ -516,12 +516,22 @@
 (use-package haskell-mode
   :hook (haskell-mode . tree-sitter-hl-mode))
 
+;;; terraform
+(use-package terraform-mode)
+
+;;; lsp
 (use-package lsp-haskell
   :after lsp-mode
   :custom
   (lsp-haskell-formatting-provider "fourmolu"))
 
-;;; lsp
+(use-package lsp-pyright
+  :after lsp-mode
+  :custom (lsp-pyright-langserver-command "pyright")
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
+
 (use-package lsp-mode
   :custom
   (lsp-keymap-prefix "C-c c")
@@ -531,6 +541,7 @@
 	 (typescript-ts-mode . lsp-deferred)
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
+	 (terraform-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
