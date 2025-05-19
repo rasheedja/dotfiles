@@ -459,6 +459,8 @@
   :config
   (dashboard-setup-startup-hook))
 
+(use-package wgrep)
+
 ;; lang
 ;;; org
 (use-package org
