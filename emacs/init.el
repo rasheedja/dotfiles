@@ -519,6 +519,19 @@
 ;;; terraform
 (use-package terraform-mode)
 
+;;; astro
+(use-package astro-ts-mode
+  :after treesit-auto
+  :init
+  (let ((astro-recipe (make-treesit-auto-recipe
+                       :lang 'astro
+                       :ts-mode 'astro-ts-mode
+                       :url "https://github.com/virchau13/tree-sitter-astro"
+                       :revision "master"
+                       :source-dir "src")))
+    (add-to-list 'treesit-auto-recipe-list astro-recipe))
+  (add-to-list 'treesit-auto-langs 'astro))
+
 ;;; lsp
 (use-package lsp-haskell
   :after lsp-mode
@@ -542,6 +555,7 @@
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
 	 (terraform-mode . lsp-deferred)
+	 (astro-ts-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
