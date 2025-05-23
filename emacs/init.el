@@ -486,7 +486,45 @@
 (use-package treesit-auto
   :config
   (setopt treesit-auto-install 'prompt)
+  ;; grammars
+   ;;; astro
+  (let ((astro-recipe (make-treesit-auto-recipe
+                       :lang 'astro
+                       :ts-mode 'astro-ts-mode
+                       :url "https://github.com/virchau13/tree-sitter-astro"
+                       :revision "master"
+                       :source-dir "src")))
+    (add-to-list 'treesit-auto-recipe-list astro-recipe))
+  ;; specify langs
+  (setopt treesit-auto-langs
+	  '(awk
+	    bash
+	    bibtex
+	    c
+	    cmake
+	    commonlisp
+	    css
+	    dockerfile
+	    go
+	    gomod
+	    java
+	    javascript
+	    json
+	    lua
+	    make
+	    nix
+	    org
+	    python
+	    rust
+	    scala
+	    sql
+	    tsx
+	    typescript
+	    yaml))
   (treesit-auto-add-to-auto-mode-alist 'all)
+  (add-to-list 'treesit-auto-langs 'astro)
+  ;; install and enable
+  (treesit-auto-install-all)
   (global-treesit-auto-mode))
 
 ;;; haskell
@@ -499,16 +537,7 @@
 ;;; astro
 (use-package astro-ts-mode
   :after
-  (treesit-auto)
-  :init
-  (let ((astro-recipe (make-treesit-auto-recipe
-                       :lang 'astro
-                       :ts-mode 'astro-ts-mode
-                       :url "https://github.com/virchau13/tree-sitter-astro"
-                       :revision "master"
-                       :source-dir "src")))
-    (add-to-list 'treesit-auto-recipe-list astro-recipe))
-  (add-to-list 'treesit-auto-langs 'astro))
+  (treesit-auto))
 
 ;;; lsp
 (use-package lsp-haskell
