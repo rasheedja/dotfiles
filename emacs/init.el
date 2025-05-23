@@ -462,26 +462,6 @@
   ("C-c o a" . org-agenda)
   ("C-c o c" . org-capture))
 
-(use-package org-roam
-  :config
-  :bind (("C-c o r l" . org-roam-buffer-toggle)
-         ("C-c o r f" . org-roam-node-find)
-         ("C-c o r g" . org-roam-graph)
-         ("C-c o r i" . org-roam-node-insert)
-         ("C-c o r c" . org-roam-capture))
-  :config
-  (setopt org-roam-directory (file-truename "~/org/roam/"))
-  (setopt org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  (require 'org-roam-protocol))
-
-(use-package org-journal
-  :config
-  (setopt org-journal-prefix-key "C-c o j")
-  (setopt org-journal-file-type 'yearly)
-  (setopt org-journal-dir (file-truename "~/org/journal/"))
-  (setopt org-journal-file-format "%F.org"))
-
 ;;; treesit
 (use-package treesit-auto
   :config
