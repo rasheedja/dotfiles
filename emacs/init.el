@@ -70,16 +70,16 @@
   :bind
   ("C-<return>" . insert-line-below)
   ("C-S-<return>" . insert-line-above)
-  :custom
-  (minibuffer-prompt-properties
-   '(read-only t cursor-intangible t face minibuffer-prompt))
-  (display-line-numbers-type 'relative)
-  (enable-recursive-minibuffers t)
-  (minibuffer-depth-indicate-mode t)
+  :config
+  (setopt minibuffer-prompt-properties
+	  '(read-only t cursor-intangible t face minibuffer-prompt))
+  (setopt display-line-numbers-type 'relative)
+  (setopt enable-recursive-minibuffers t)
+  (setopt minibuffer-depth-indicate-mode t)
   ;; Hide commands in M-x which do not work in the current mode
-  (read-extended-command-predicate #'command-completion-default-include-p)
+  (setopt read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
-  (tab-always-indent 'complete)
+  (setopt tab-always-indent 'complete)
   :hook
   (minibuffer-setup . cursor-intangible-mode)
   (prog-mode . display-line-numbers-mode)
@@ -110,13 +110,12 @@
   (marginalia-mode))
 
 (use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
+  :config
+  (setopt completion-styles '(orderless basic))
+  (setopt completion-category-defaults nil)
+  (setopt completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package consult
-  :after (projectile)
   ;; Replace bindings. Lazily loaded by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
          ("C-c M-x" . consult-mode-command)
@@ -181,25 +180,21 @@
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
 
-  :custom
+  :config
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
-  (register-preview-delay 0.5)
-  (register-preview-function #'consult-register-format)
+  (setopt register-preview-delay 0.5)
+  (setopt register-preview-function #'consult-register-format)
 
   ;; Use Consult to select xref locations with preview
-  (xref-show-xrefs-function #'consult-xref)
-  (xref-show-definitions-function #'consult-xref)
+  (setopt xref-show-xrefs-function #'consult-xref)
+  (setopt xref-show-definitions-function #'consult-xref)
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
-  (consult-narrow-key "<") ;; "C-+"
+  (setopt consult-narrow-key "<") ;; "C-+"
   
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-
   ;; Optionally configure preview. The default value
   ;; is 'any, such that any key triggers the preview.
   ;; (setq consult-preview-key 'any)
@@ -238,12 +233,9 @@
   ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
-  :custom
-  ;; Optionally replace the key help with a completing-read interface
-  (prefix-help-command #'embark-prefix-help-command)
-  
   :config
-
+  ;; Optionally replace the key help with a completing-read interface
+  (setopt prefix-help-command #'embark-prefix-help-command)
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
@@ -260,11 +252,9 @@
   (vertico-mode))
 
 ;; Tools
-
 (use-package apheleia
-  :custom
-  (apheleia-formatters-respect-indent-level 'nil)
   :config
+  (setopt apheleia-formatters-respect-indent-level 'nil)
   (apheleia-global-mode +1))
 
 (use-package multiple-cursors
@@ -320,31 +310,22 @@
    ("C-c a g" . activities-revert)
    ("C-c a l" . activities-list)))
 
-(use-package projectile
-  :demand t
-  :init
-  (projectile-mode +1)
-  :bind (:map projectile-mode-map
-              ("C-c p" . projectile-command-map)))
-
 (use-package treemacs)
-
-(use-package treemacs-projectile
-  :after (treemacs projectile))
 
 (use-package treemacs-magit
   :after (treemacs magit))
 
 ;; UI/UX
 (use-package ace-window
-  :custom
-  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (aw-scope 'frame)
+  :config
+  (setopt aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setopt aw-scope 'frame)
   :bind
   ("C-x o" . ace-window))
 
 (use-package ligature
   :config
+  (setopt composition-break-at-point t)
   ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
   ;; Enable traditional ligature support in eww-mode, if the
@@ -430,33 +411,32 @@
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package doom-modeline
-  :custom
-  (doom-modeline-minor-modes t)
-  (doom-modeline-total-line-number t)
+  :config
+  (setopt doom-modeline-minor-modes t)
+  (setopt doom-modeline-total-line-number t)
   :hook (after-init . doom-modeline-mode))
 
 (use-package dashboard
   :after
-  (nerd-icons projectile org)
-  :custom
-  (dashboard-center-content t)
-  (dashboard-icon-type 'nerd-icons)
-  (dashboard-set-heading-icons t)
-  (dashboard-set-file-icons t)
-  (dashboard-projects-backend 'projectile)
-  (dashboard-display-icons-p t)
-  (dashboard-items '((recents   . 5)
-		     (agenda . 5)
-                     (bookmarks  . 5)
-                     (projects . 5)))
-  (dashboard-startupify-list '(dashboard-insert-banner
-			       dashboard-insert-newline
-			       dashboard-insert-banner-title
-			       dashboard-insert-newline
-			       dashboard-insert-items
-			       dashboard-insert-newline
-			       dashboard-insert-init-info))
+  (nerd-icons org)
   :config
+  (setopt dashboard-center-content t)
+  (setopt dashboard-icon-type 'nerd-icons)
+  (setopt dashboard-set-heading-icons t)
+  (setopt dashboard-set-file-icons t)
+  (setopt dashboard-projects-backend 'project-el)
+  (setopt dashboard-display-icons-p t)
+  (setopt dashboard-items '((recents   . 5)
+			    (agenda . 5)
+			    (bookmarks  . 5)
+			    (projects . 5)))
+  (setopt dashboard-startupify-list '(dashboard-insert-banner
+				      dashboard-insert-newline
+				      dashboard-insert-banner-title
+				      dashboard-insert-newline
+				      dashboard-insert-items
+				      dashboard-insert-newline
+				      dashboard-insert-init-info))
   (dashboard-setup-startup-hook))
 
 (use-package wgrep)
@@ -468,47 +448,44 @@
   (org-mode . auto-fill-mode)
   (org-mode . org-indent-mode)
   ;; (org-agenda-finalize . org-agenda-log-mode)
-  :custom
-  (org-agenda-files (list
-		     (file-truename "~/org/agenda/")
-		     (file-truename "~/org/agenda/projects/")))
-  (org-agenda-show-future-repeats 'nil)
-  (org-agenda-start-with-log-mode t)
-  (org-enforce-todo-dependencies t)
-  (org-enforce-todo-checkbox-dependencies t)
-  (org-log-done 'time)
+  :config
+  (setopt org-agenda-files (list
+			    (file-truename "~/org/agenda/")
+			    (file-truename "~/org/agenda/projects/")))
+  (setopt org-agenda-show-future-repeats 'nil)
+  (setopt org-agenda-start-with-log-mode t)
+  (setopt org-enforce-todo-dependencies t)
+  (setopt org-enforce-todo-checkbox-dependencies t)
+  (setopt org-log-done 'time)
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda)
   ("C-c o c" . org-capture))
 
 (use-package org-roam
-  :custom
-  (org-roam-directory (file-truename "~/org/roam/"))
+  :config
   :bind (("C-c o r l" . org-roam-buffer-toggle)
          ("C-c o r f" . org-roam-node-find)
          ("C-c o r g" . org-roam-graph)
          ("C-c o r i" . org-roam-node-insert)
          ("C-c o r c" . org-roam-capture))
   :config
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (setopt org-roam-directory (file-truename "~/org/roam/"))
+  (setopt org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode)
   (require 'org-roam-protocol))
 
 (use-package org-journal
-  :custom
-  (org-journal-prefix-key "C-c o j")
-  (org-journal-file-type 'yearly)
-  (org-journal-dir (file-truename "~/org/journal/"))
-  (org-journal-file-format "%F.org"))
-
-;;; treesitter
-(use-package tree-sitter-langs)
-
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
   :config
+  (setopt org-journal-prefix-key "C-c o j")
+  (setopt org-journal-file-type 'yearly)
+  (setopt org-journal-dir (file-truename "~/org/journal/"))
+  (setopt org-journal-file-format "%F.org"))
+
+;;; treesit
+(use-package treesit-auto
+  :config
+  (setopt treesit-auto-install 'prompt)
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
@@ -535,19 +512,20 @@
 ;;; lsp
 (use-package lsp-haskell
   :after lsp-mode
-  :custom
-  (lsp-haskell-formatting-provider "fourmolu"))
+  :config
+  (setopt lsp-haskell-formatting-provider "fourmolu"))
 
 (use-package lsp-pyright
   :after lsp-mode
-  :custom (lsp-pyright-langserver-command "pyright")
+  :config
+  (setopt lsp-pyright-langserver-command "pyright")
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp-deferred))))
 
 (use-package lsp-mode
-  :custom
-  (lsp-keymap-prefix "C-c c")
+  :config
+  (setopt lsp-keymap-prefix "C-c c")
   :hook (
          (haskell-mode . lsp-deferred)
 	 (haskell-literate-mode . lsp-deferred)
@@ -575,6 +553,6 @@
 ;; LLM
 (use-package aidermacs
   :bind (("C-c v" . aidermacs-transient-menu))
-  :custom
-  (aidermacs-use-architect-mode t)
-  (aidermacs-default-model "openai/o4-mini"))
+  :config
+  (setopt aidermacs-use-architect-mode t)
+  (setopt aidermacs-default-model "openai/o4-mini"))
