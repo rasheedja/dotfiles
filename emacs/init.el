@@ -243,7 +243,8 @@
                  (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-  :after (embark consult)
+  :after
+  (embark)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -285,14 +286,16 @@
   ("C-c g" . magit-status))
 
 (use-package diff-hl
-  :after (magit)
+  :after
+  (magit)
   :config
   (global-diff-hl-mode)
   (diff-hl-dired-mode)
   (diff-hl-flydiff-mode)
   (diff-hl-show-hunk-mouse-mode)
-  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  :hook
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; Projects/Workspaces
 (use-package activities
@@ -312,8 +315,7 @@
 
 (use-package treemacs)
 
-(use-package treemacs-magit
-  :after (treemacs magit))
+(use-package treemacs-magit)
 
 ;; UI/UX
 (use-package ace-window
@@ -401,12 +403,12 @@
 (use-package nerd-icons)
 
 (use-package treemacs-nerd-icons
-  :after (treemacs nerd-icons)
+  :after
+  (treemacs)
   :config
   (treemacs-load-theme "nerd-icons"))
 
 (use-package nerd-icons-dired
-  :after (nerd-icons)
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
@@ -417,8 +419,6 @@
   :hook (after-init . doom-modeline-mode))
 
 (use-package dashboard
-  :after
-  (nerd-icons org)
   :config
   (setopt dashboard-center-content t)
   (setopt dashboard-icon-type 'nerd-icons)
@@ -453,7 +453,7 @@
 			    (file-truename "~/org/agenda/")
 			    (file-truename "~/org/agenda/projects/")))
   (setopt org-agenda-show-future-repeats 'nil)
-  (setopt org-agenda-start-with-log-mode t)
+  (setopt org-agenda-start-with-log-mode 'clockcheck)
   (setopt org-enforce-todo-dependencies t)
   (setopt org-enforce-todo-checkbox-dependencies t)
   (setopt org-log-done 'time)
@@ -498,7 +498,8 @@
 
 ;;; astro
 (use-package astro-ts-mode
-  :after treesit-auto
+  :after
+  (treesit-auto)
   :init
   (let ((astro-recipe (make-treesit-auto-recipe
                        :lang 'astro
@@ -511,12 +512,10 @@
 
 ;;; lsp
 (use-package lsp-haskell
-  :after lsp-mode
   :config
   (setopt lsp-haskell-formatting-provider "fourmolu"))
 
 (use-package lsp-pyright
-  :after lsp-mode
   :config
   (setopt lsp-pyright-langserver-command "pyright")
   :hook (python-mode . (lambda ()
@@ -527,8 +526,8 @@
   :config
   (setopt lsp-keymap-prefix "C-c c")
   :hook (
-         (haskell-mode . lsp-deferred)
-	 (haskell-literate-mode . lsp-deferred)
+	 (haskell-mode . lsp-deferred)
+	 (haskell-literature-mode . lsp-deferred)
 	 (typescript-ts-mode . lsp-deferred)
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
@@ -537,16 +536,17 @@
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
 (use-package consult-lsp
-  :after (consult lsp-mode)
+  :after
+  (lsp-mode)
   :bind
   (:map lsp-mode-map
 	("C-c c c d" . consult-lsp-diagnostics)
 	("C-c c c f" . consult-lsp-file-symbols)
 	("C-c c c s" . consult-lsp-symbols)))
-
-(use-package lsp-ui :commands lsp-ui-mode)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 (use-package dap-mode)
 
