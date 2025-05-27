@@ -447,7 +447,6 @@
   :hook
   (org-mode . auto-fill-mode)
   (org-mode . org-indent-mode)
-  ;; (org-agenda-finalize . org-agenda-log-mode)
   :config
   (setopt org-agenda-files (list
 			    (file-truename "~/org/agenda/")
@@ -457,10 +456,18 @@
   (setopt org-enforce-todo-dependencies t)
   (setopt org-enforce-todo-checkbox-dependencies t)
   (setopt org-log-done 'time)
+  (setq org-capture-templates
+	'(("t" "Todo" entry (file+headline "~/org/agenda/inbox.org" "Inbox")
+           "* TODO %?\n  %i\n  %a")
+	  ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "* %?\nEntered on %T\n  %i\n  %a")))
+
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda)
-  ("C-c o c" . org-capture))
+  ("C-c o c" . org-capture)
+  ("C-c o t" . (lambda () (interactive) (org-capture nil "t")))
+  ("C-c o j" . (lambda () (interactive) (org-capture nil "j"))))
 
 ;;; treesit
 (use-package treesit-auto
