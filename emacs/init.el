@@ -469,11 +469,11 @@
   ;; grammars
    ;;; astro
   (let ((astro-recipe (make-treesit-auto-recipe
-                       :lang 'astro
-                       :ts-mode 'astro-ts-mode
-                       :url "https://github.com/virchau13/tree-sitter-astro"
-                       :revision "master"
-                       :source-dir "src")))
+		       :lang 'astro
+		       :ts-mode 'astro-ts-mode
+		       :url "https://github.com/virchau13/tree-sitter-astro"
+		       :revision "master"
+		       :source-dir "src")))
     (add-to-list 'treesit-auto-recipe-list astro-recipe))
   ;; specify langs
   (setopt treesit-auto-langs
