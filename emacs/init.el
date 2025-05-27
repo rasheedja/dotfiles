@@ -91,15 +91,6 @@
   (prog-mode . flycheck-mode))
 
 ;; Completion
-;;; main buffer
-(use-package company
-  :hook
-  (after-init . global-company-mode))
-
-(use-package company-box
-  :hook
-  (company-mode . company-box-mode))
-
 ;;; minibuffer
 (use-package savehist
   :config
@@ -253,6 +244,13 @@
 (use-package vertico
   :config
   (vertico-mode))
+
+;;; main buffer
+(use-package corfu
+  :init
+  (global-corfu-mode)
+  :config
+  (setopt corfu-auto t))
 
 ;; Tools
 (use-package apheleia
