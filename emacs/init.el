@@ -542,8 +542,10 @@
   (global-treesit-auto-mode))
 
 ;;; haskell
-(use-package haskell-mode
-  :hook (haskell-mode . tree-sitter-hl-mode))
+(use-package haskell-mode)
+
+;;; nix
+(use-package nix-mode)
 
 ;;; terraform
 (use-package terraform-mode)
