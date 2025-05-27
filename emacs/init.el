@@ -210,6 +210,8 @@
 
 (use-package consult-flycheck)
 
+(use-package consult-hoogle)
+
 (use-package embark
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
