@@ -459,7 +459,7 @@
   (setq org-capture-templates
 	'(("t" "Todo" entry (file+headline "~/org/agenda/inbox.org" "Inbox")
            "* TODO %?\n  %i\n  %a")
-	  ("j" "Journal" entry (file+datetree "~/org/journal.org")
+	  ("j" "Journal" entry (file+datetree "~/org/agenda/journal.org")
            "* %?\nEntered on %T\n  %i\n  %a")))
 
   :bind
