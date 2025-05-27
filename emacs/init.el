@@ -253,7 +253,9 @@
   (global-corfu-mode)
   :config
   (setopt corfu-auto t)
-  (setopt corfu-popupinfo-mode t))
+  (setopt corfu-popupinfo-mode t)
+  (keymap-unset corfu-map "RET")
+  )
 
 (use-package cape
   ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
