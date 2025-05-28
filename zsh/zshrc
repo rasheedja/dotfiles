@@ -48,6 +48,9 @@ alias zshrc="vim ~/.zshrc"
 # Export TERM
 export TERM=xterm-256color
 
+# Add home opt to path
+path+=('/home/junaid/opt')
+
 # Add GPS to path
 path+=('/home/junaid/Research/opt/GNAT/2018/bin')
 
