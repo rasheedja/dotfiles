@@ -212,9 +212,11 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
-(use-package consult-flycheck)
+(use-package consult-flycheck
+  :commands consult-flycheck)
 
-(use-package consult-hoogle)
+(use-package consult-hoogle
+  :commands consult-hoogle consult-hoogle-project)
 
 (use-package embark
   :bind
@@ -281,8 +283,12 @@
   (which-key-mode))
 
 (if (eq system-type 'windows-nt)
-    (use-package eat)
-  (use-package vterm))
+    (use-package eat
+      :bind
+      ("C-c t" . eat))
+  (use-package vterm
+    :bind
+    ("C-c t" . vterm)))
 
 ;; vc
 (use-package magit
@@ -318,8 +324,7 @@
    ("C-c a l" . activities-list)))
 
 (use-package treemacs
-  :bind
-  (("C-c t" . treemacs)))
+  :commands treemacs)
 
 (use-package treemacs-magit
   :after
@@ -533,13 +538,15 @@
 
 ;;; astro
 (use-package astro-ts-mode
-  :after
-  (treesit-auto))
+  :hook
+  (astro-ts-mode . lsp-deferred))
 
 ;;; lsp
 (use-package lsp-haskell
   :config
-  (setopt lsp-haskell-formatting-provider "fourmolu"))
+  (setopt lsp-haskell-formatting-provider "fourmolu")
+  :hook ((haskell-mode . lsp-deferred)
+	 (haskell-literature-mode . lsp-deferred)))
 
 (use-package lsp-pyright
   :config
@@ -585,14 +592,10 @@
   (setq lsp-keymap-prefix "C-c c")
   :config
   (define-key lsp-mode-map (kbd "C-c c") lsp-command-map)
-  :hook (
-	 (haskell-mode . lsp-deferred)
-	 (haskell-literature-mode . lsp-deferred)
-	 (typescript-ts-mode . lsp-deferred)
+  :hook ((typescript-ts-mode . lsp-deferred)
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
 	 (terraform-mode . lsp-deferred)
-	 (astro-ts-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
@@ -604,9 +607,9 @@
   (lsp-mode)
   :bind
   (:map lsp-mode-map
-	("C-c c c d" . consult-lsp-diagnostics)
-	("C-c c c f" . consult-lsp-file-symbols)
-	("C-c c c s" . consult-lsp-symbols)))
+	("C-c l d" . consult-lsp-diagnostics)
+	("C-c l f" . consult-lsp-file-symbols)
+	("C-c l s" . consult-lsp-symbols)))
 
 (use-package dap-mode)
 
