@@ -14,8 +14,9 @@
 ;; Core
 (use-package use-package
   :config
-  (setq use-package-always-ensure t
-	use-package-expand-minimally t)
+  (setopt use-package-always-ensure t)
+  (setopt use-package-expand-minimally t)
+  ;; (setopt use-package-compute-statistics t)
   (unless (package-installed-p 'vc-use-package)
     (package-vc-install "https://github.com/slotThe/vc-use-package"))
   (require 'vc-use-package))
