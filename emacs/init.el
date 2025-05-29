@@ -317,9 +317,13 @@
    ("C-c a g" . activities-revert)
    ("C-c a l" . activities-list)))
 
-(use-package treemacs)
+(use-package treemacs
+  :bind
+  (("C-c t" . treemacs)))
 
-(use-package treemacs-magit)
+(use-package treemacs-magit
+  :after
+  (treemacs))
 
 ;; UI/UX
 (use-package ace-window
