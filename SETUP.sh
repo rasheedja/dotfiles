@@ -13,13 +13,14 @@ chsh -s "$(which zsh)"
 ln -sfr vim/vimrc ~/.vimrc
 ln -sfr zsh/zshrc ~/.zshrc
 ln -sfr tmux/tmux.conf ~/.tmux.conf
+ln -sfr emacs/init.el ~/.config/emacs/init.el
 
 ## Doom
-mkdir -p ~/.config/doom/
-ln -sfr doom/init.el ~/.config/doom/init.el
-ln -sfr doom/packages.el ~/.config/doom/packages.el
-ln -sfr doom/config.el ~/.config/doom/config.el
-ln -sfr doom/custom.el ~/.config/doom/custom.el
+# mkdir -p ~/.config/doom/
+# ln -sfr doom/init.el ~/.config/doom/init.el
+# ln -sfr doom/packages.el ~/.config/doom/packages.el
+# ln -sfr doom/config.el ~/.config/doom/config.el
+# ln -sfr doom/custom.el ~/.config/doom/custom.el
 
 # Install antigen
 curl -L git.io/antigen >~/.antigen.zsh
