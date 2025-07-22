@@ -69,7 +69,7 @@
                '(font . "Fira Code-12"))
   :config
   (delete-selection-mode)
-  (load-theme 'modus-vivendi)
+					; (load-theme 'modus-vivendi)
   (scroll-bar-mode -1)
   (column-number-mode 't)
   :bind
@@ -94,6 +94,8 @@
 (use-package flycheck
   :hook
   (prog-mode . flycheck-mode))
+
+(use-package flycheck-projectile)
 
 ;; Completion
 ;;; minibuffer
@@ -262,8 +264,7 @@
 ;; Tools
 (use-package apheleia
   :config
-  (setopt apheleia-formatters-respect-indent-level 'nil)
-  (apheleia-global-mode +1))
+  (setopt apheleia-formatters-respect-indent-level 'nil))
 
 (use-package multiple-cursors
   :bind
@@ -287,9 +288,9 @@
     (use-package eat
       :bind
       ("C-c t" . eat))
-  (use-package vterm
+  (use-package eat
     :bind
-    ("C-c t" . vterm)))
+    ("C-c t" . eat)))
 
 ;; vc
 (use-package magit
@@ -309,6 +310,13 @@
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; Projects/Workspaces
+(use-package projectile
+  :init
+  (projectile-mode +1)
+  :bind
+  (:map projectile-mode-map
+	("C-c p" . projectile-command-map)))
+
 (use-package activities
   :config
   (activities-mode)
@@ -332,6 +340,10 @@
   (treemacs))
 
 ;; UI/UX
+(use-package ef-themes
+  :config
+  (load-theme 'ef-day :no-confirm))
+
 (use-package ace-window
   :config
   (setopt aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
@@ -455,6 +467,10 @@
 
 (use-package wgrep)
 
+(use-package envrc
+  :config
+  (envrc-global-mode))
+
 ;; lang
 ;;; org
 (use-package org
@@ -463,8 +479,7 @@
   (org-mode . org-indent-mode)
   :config
   (setopt org-agenda-files (list
-			    (file-truename "~/org/agenda/")
-			    (file-truename "~/org/agenda/projects/")))
+			    (file-truename "~/org/agenda/")))
   (setopt org-agenda-show-future-repeats 'nil)
   (setopt org-agenda-start-with-log-mode 'clockcheck)
   (setopt org-enforce-todo-dependencies t)
@@ -544,8 +559,9 @@
 
 ;;; lsp
 (use-package lsp-haskell
-  :config
-  (setopt lsp-haskell-formatting-provider "fourmolu")
+  :custom
+  (lsp-haskell-server-path "haskell-language-server")
+					; (setopt lsp-haskell-formatting-provider "fourmolu")
   :hook ((haskell-mode . lsp-deferred)
 	 (haskell-literature-mode . lsp-deferred)))
 
@@ -613,10 +629,27 @@
 	("C-c l s" . consult-lsp-symbols)))
 
 (use-package dap-mode)
-
-;; LLM
-(use-package aidermacs
-  :bind (("C-c v" . aidermacs-transient-menu))
-  :config
-  (setopt aidermacs-use-architect-mode t)
-  (setopt aidermacs-default-model "openai/o4-mini"))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(activities aidermacs apheleia astro-ts-mode chatgpt-shell company
+		consult-flycheck consult-hoogle consult-lsp
+		consult-projectile copilot copilot-chat corfu dap-mode
+		dashboard diff-hl direnv doom-modeline eat ef-themes
+		embark-consult envrc flycheck-projectile frame-local
+		haskell-mode ligature lsp-haskell lsp-pyright lsp-ui
+		marginalia minions monokai-theme multiple-cursors
+		nerd-icons-corfu nerd-icons-dired nix-mode orderless
+		org-journal org-roam terraform-mode tree-sitter-langs
+		treemacs-magit treemacs-nerd-icons treemacs-projectile
+		treesit-auto vc-use-package vertico vterm wgrep
+		which-key)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

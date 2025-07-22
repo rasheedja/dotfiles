@@ -41,6 +41,9 @@ BULLETTRAIN_PROMPT_ORDER=(
 # Finish antigen
 antigen apply
 
+# Specify default shell
+SHELL=$(which zsh)
+
 # Aliases
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
@@ -65,4 +68,7 @@ path+=('/home/junaid/.ghcup/bin')
 
 # Add cabal bin to path
 path+=('/home/junaid/.cabal/bin')
+
+# direnv hook
+eval "$(direnv hook zsh)"
 
