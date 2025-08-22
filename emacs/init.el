@@ -67,6 +67,10 @@
   
   (add-to-list 'default-frame-alist
                '(font . "Fira Code-12"))
+
+  ;; Map Alt+3 to # for Mac keyboards
+  (if (eq system-type 'darwin) (define-key key-translation-map (kbd "M-3") (kbd "#")))
+
   :config
   (delete-selection-mode)
 					; (load-theme 'modus-vivendi)
