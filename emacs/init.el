@@ -339,7 +339,7 @@
 ;; UI/UX
 (use-package ef-themes
   :config
-  (load-theme 'ef-day :no-confirm))
+  (load-theme 'ef-cherie :no-confirm))
 
 (use-package ace-window
   :config
