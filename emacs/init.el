@@ -497,8 +497,31 @@
   ("C-c o t" . (lambda () (interactive) (org-capture nil "t")))
   ("C-c o j" . (lambda () (interactive) (org-capture nil "j"))))
 
+(use-package howm
+  :init
+  ;;
+  ;; Options: Remove the leading ";" in the following lines if you like.
+  ;;
+  ;; Format
+  ;(require 'howm-markdown) ;; Write notes in markdown-mode. (*1)
+  (require 'howm-org) ;; Write notes in Org-mode. (*2)
+  ;;
+  ;; Preferences
+  ;(setq howm-directory "~/Documents/Howm") ;; Where to store the files?
+  ;(setq howm-follow-theme t) ;; Use your Emacs theme colors. (*3)
+  ;;
+  ;; Performance
+  ;(setq howm-menu-expiry-hours 1) ;; Cache menu N hours. (*4)
+  ;(setq howm-menu-refresh-after-save nil) ;; Speed up note saving. (*5)
+
+  :custom
+  (howm-directory "~/howm/")
+  (howm-history-file (expand-file-name ".howm-history" howm-directory))
+  (howm-keyword-file (expand-file-name ".howm-keys" howm-directory)))
+
 ;;; treesit
 (use-package treesit-auto
+  :defer t
   :config
   (setopt treesit-auto-install 'prompt)
   ;; grammars
