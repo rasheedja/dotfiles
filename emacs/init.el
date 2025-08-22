@@ -436,9 +436,11 @@
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package doom-modeline
-  :config
-  (setopt doom-modeline-minor-modes t)
-  (setopt doom-modeline-total-line-number t)
+  :custom
+  (doom-modeline-buffer-file-name-style 'relative-from-project)
+  (doom-modeline-minor-modes t)
+  (doom-modeline-mode t)
+  (doom-modeline-total-line-number t)
   :hook (after-init . doom-modeline-mode))
 
 (use-package dashboard
