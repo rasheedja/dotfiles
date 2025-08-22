@@ -314,13 +314,6 @@
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; Projects/Workspaces
-(use-package projectile
-  :init
-  (projectile-mode +1)
-  :bind
-  (:map projectile-mode-map
-	("C-c p" . projectile-command-map)))
-
 (use-package activities
   :config
   (activities-mode)
