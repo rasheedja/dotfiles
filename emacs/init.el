@@ -288,18 +288,18 @@
   :config
   (which-key-mode))
 
-(if (eq system-type 'windows-nt)
-    (use-package eat
-      :bind
-      ("C-c t" . eat))
-  (use-package eat
-    :bind
-    ("C-c t" . eat)))
+(use-package eat
+  :bind
+  ("C-c t" . eat))
 
 ;; vc
 (use-package magit
   :bind
   ("C-c g" . magit-status))
+
+(use-package forge
+  :after
+  (magit))
 
 (use-package diff-hl
   :after
