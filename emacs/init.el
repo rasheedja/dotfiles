@@ -504,6 +504,10 @@
 				      dashboard-insert-init-info))
   (dashboard-setup-startup-hook))
 
+(use-package hl-todo
+  :config
+  (global-hl-todo-mode))
+
 (use-package wgrep)
 
 (use-package envrc
