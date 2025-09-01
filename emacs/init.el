@@ -89,27 +89,17 @@
   (setopt read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
   (setopt tab-always-indent 'complete)
-  :custom
-  (gc-cons-threshold 100000000)
-  ;; TAB cycle if there are only few candidates
-  ;; (completion-cycle-threshold 3)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (tab-always-indent 'complete)
-
-  ;; Emacs 30 and newer: Disable Ispell completion function.
-  ;; Try `cape-dict' as an alternative.
-  (text-mode-ispell-word-completion nil)
-
-  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
-  ;; commands are hidden, since they are not used via M-x. This setting is
-  ;; useful beyond Corfu.
-  (read-extended-command-predicate #'command-completion-default-include-p)
   :hook
   (minibuffer-setup . cursor-intangible-mode)
   (prog-mode . display-line-numbers-mode)
   (org-mode . display-line-numbers-mode))
+
+;; Checkers
+(use-package flycheck
+  :hook
+  (prog-mode . flycheck-mode))
+
+(use-package flycheck-projectile)
 
 ;; Completion
 ;;; minibuffer
@@ -267,44 +257,13 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
-  :init
-  (setq completion-in-region-function #'consult-completion-in-region)
   :config
   (vertico-mode))
 
 ;;; main buffer
-(use-package corfu
-  ;; Optional customizations
-  :custom
-  (corfu-auto-delay 0.01)
-  (corfu-auto t)
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-:init
-;; Recommended: Enable Corfu globally.  Recommended since many modes provide
-  ;; Capfs and Dabbrev can be used globally (M-/).  See also the customization
-  ;; variable `global-corfu-modes' to exclude certain modes.
-  (global-corfu-mode)
-;; Enable optional extension modes:
-  (corfu-history-mode)
-  (corfu-popupinfo-mode)
-:config
-  ;; Free the RET key for less intrusive behavior.
-  ;; Option 1: Unbind RET completely
-  ;; (keymap-unset corfu-map "RET")
-  ;; Option 2: Use RET only in shell modes
-  (keymap-set corfu-map "RET" `( menu-item "" nil :filter
-                                 ,(lambda (&optional _)
-                                    (and (derived-mode-p 'eshell-mode 'comint-mode)
-                                         #'corfu-send)))))
+(use-package company
+  :hook
+  (after-init . global-company-mode))
 
 ;; Tools
 (use-package apheleia
@@ -610,30 +569,112 @@
   (global-treesit-auto-mode))
 
 ;;; haskell
-(use-package haskell-mode
-  :defer t
-  :hook (haskell-mode . eglot-ensure))
+(use-package haskell-mode)
 
 ;;; nix
-(use-package nix-mode
-  :defer t)
+(use-package nix-mode)
 
 ;;; terraform
-(use-package terraform-mode
-  :defer t)
+(use-package terraform-mode)
 
 ;;; astro
 (use-package astro-ts-mode
-  :defer t)
+  :hook
+  (astro-ts-mode . lsp-deferred))
 
-;; adoc
-(use-package adoc-mode
-  :defer t)
+;;; lsp
+(use-package lsp-haskell
+  :custom
+  (lsp-haskell-server-path "haskell-language-server")
+					; (setopt lsp-haskell-formatting-provider "fourmolu")
+  :hook ((haskell-mode . lsp-deferred)
+	 (haskell-literature-mode . lsp-deferred)))
 
-(use-package consult-eglot
-  :defer t)
-
-(use-package consult-eglot-embark
-  :after embark consult-eglot
+(use-package lsp-pyright
   :config
-  (consult-eglot-embark-mode))
+  (setopt lsp-pyright-langserver-command "pyright")
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred))))
+
+(use-package lsp-mode
+  :init
+  ;; lsp booster setup
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
+       (let ((bytecode (read (current-buffer))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
+  (advice-add (if (progn (require 'json)
+                         (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+                'json-read)
+              :around
+              #'lsp-booster--advice-json-parse)
+
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+              (setcar orig-result command-from-exec-path))
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+
+  (setq lsp-keymap-prefix "C-c c")
+  :config
+  (define-key lsp-mode-map (kbd "C-c c") lsp-command-map)
+  :hook ((typescript-ts-mode . lsp-deferred)
+	 (javascript-mode . lsp-deferred)
+	 (yaml-mode . lsp-deferred)
+	 (terraform-mode . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp lsp-deferred))
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package consult-lsp
+  :after
+  (lsp-mode)
+  :bind
+  (:map lsp-mode-map
+	("C-c l d" . consult-lsp-diagnostics)
+	("C-c l f" . consult-lsp-file-symbols)
+	("C-c l s" . consult-lsp-symbols)))
+
+(use-package dap-mode)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(activities aidermacs apheleia astro-ts-mode chatgpt-shell company
+		consult-flycheck consult-hoogle consult-lsp
+		consult-projectile copilot copilot-chat corfu dap-mode
+		dashboard diff-hl direnv doom-modeline eat ef-themes
+		embark-consult envrc flycheck-projectile frame-local
+		haskell-mode ligature lsp-haskell lsp-pyright lsp-ui
+		marginalia minions monokai-theme multiple-cursors
+		nerd-icons-corfu nerd-icons-dired nix-mode orderless
+		org-journal org-roam terraform-mode tree-sitter-langs
+		treemacs-magit treemacs-nerd-icons treemacs-projectile
+		treesit-auto vc-use-package vertico vterm wgrep
+		which-key)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
