@@ -493,7 +493,6 @@
   (setopt dashboard-projects-backend 'project-el)
   (setopt dashboard-display-icons-p t)
   (setopt dashboard-items '((recents   . 5)
-			    (agenda . 5)
 			    (bookmarks  . 5)
 			    (projects . 5)))
   (setopt dashboard-startupify-list '(dashboard-insert-banner
