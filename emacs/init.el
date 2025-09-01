@@ -99,8 +99,6 @@
   :hook
   (prog-mode . flycheck-mode))
 
-(use-package flycheck-projectile)
-
 ;; Completion
 ;;; minibuffer
 (use-package savehist
