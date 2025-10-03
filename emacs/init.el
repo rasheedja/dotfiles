@@ -88,7 +88,7 @@
   ;; Hide commands in M-x which do not work in the current mode
   (setopt read-extended-command-predicate #'command-completion-default-include-p)
   ;; Enable indentation+completion using the TAB key.
-  (setopt tab-always-indent 'complete)
+  ;; (setopt tab-always-indent 'complete)
   :custom
   (gc-cons-threshold 100000000)
   ;; TAB cycle if there are only few candidates
@@ -152,7 +152,7 @@
          ("M-y" . consult-yank-pop)                ;; orig. yank-pop
          ;; M-g bindings in `goto-map'
          ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flycheck)              ;; Alternative: consult-flymake
+         ("M-g f" . consult-flymake)              ;; Alternative: consult-flycheck
          ("M-g g" . consult-goto-line)             ;; orig. goto-line
          ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
