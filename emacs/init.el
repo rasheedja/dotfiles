@@ -504,6 +504,10 @@
 				      dashboard-insert-init-info))
   (dashboard-setup-startup-hook))
 
+(use-package eldoc-box
+  :init
+  (setq eldoc-box-hover-mode 1))
+
 (use-package hl-todo
   :config
   (global-hl-todo-mode))
