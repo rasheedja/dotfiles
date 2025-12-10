@@ -14,12 +14,10 @@
 ;; Core
 (use-package use-package
   :config
-  (setopt use-package-always-ensure t)
-  (setopt use-package-expand-minimally t)
   ;; (setopt use-package-compute-statistics t)
-  (unless (package-installed-p 'vc-use-package)
-    (package-vc-install "https://github.com/slotThe/vc-use-package"))
-  (require 'vc-use-package))
+  (setopt use-package-always-ensure t)
+  (setopt use-package-expand-minimally t))
+
 
 (use-package emacs
   :ensure nil
