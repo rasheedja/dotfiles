@@ -693,34 +693,31 @@
   (dash)
   :defer t
   :bind
-  (("C-c q y" . #'minuet-complete-with-minibuffer) ;; use minibuffer for completion
-   ("C-c q i" . #'minuet-show-suggestion) ;; use overlay for completion
-   ("C-c q m" . #'minuet-configure-provider)
+  (("C-c q" . #'minuet-complete-with-minibuffer)
+   ;; ("C-c q y" . #'minuet-complete-with-minibuffer) ;; use minibuffer for completion
+   ;; ("C-c q i" . #'minuet-show-suggestion) ;; use overlay for completion
+   ;; ("C-c q m" . #'minuet-configure-provider)
    :map minuet-active-mode-map
    ;; These keymaps activate only when a minuet suggestion is displayed in the current buffer
    ("M-p" . #'minuet-previous-suggestion) ;; invoke completion or cycle to next completion
    ("M-n" . #'minuet-next-suggestion) ;; invoke completion or cycle to previous completion
    ("C-M-<tab>" . #'minuet-accept-suggestion) ;; accept whole completion
    ;; Accept the first line of completion, or N lines with a numeric-prefix:
-   ;; e.g. C-u 2 M-a will accepts 2 lines of completion.
    ("M-<tab>" . #'minuet-accept-suggestion-line)
    ("M-e" . #'minuet-dismiss-suggestion))
   :hook
-  ;; if you want to enable auto suggestion.
-  ;; Note that you can manually invoke completions without enable minuet-auto-suggestion-mode
   (prog-mode . minuet-auto-suggestion-mode)
   :config
   (setq minuet-provider 'openai-fim-compatible)
-  (setq minuet-n-completions 1) ; recommended for Local LLM for resource saving
-  ;; I recommend beginning with a small context window size and incrementally
-  ;; expanding it, depending on your local computing power. A context window
-  ;; of 512, serves as an good starting point to estimate your computing
-  ;; power. Once you have a reliable estimate of your local computing power,
-  ;; you should adjust the context window to a larger value.
+  (setq minuet-n-completions 5)
   (setq minuet-context-window 2048)
   (plist-put minuet-openai-fim-compatible-options :end-point "http://localhost:11434/v1/completions")
   (plist-put minuet-openai-fim-compatible-options :name "Ollama")
   ;; an arbitrary non-null environment variable as placeholder.
   (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
   (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:3b")
-  (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 1024))
+  (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 1024)
+  (minuet-set-optional-options minuet-openai-fim-compatible-options :top_p 0.9)
+  ;; don't suggest more than one line
+  ; (minuet-set-optional-options minuet-openai-fim-compatible-options :stop ["\n"])
+  )
