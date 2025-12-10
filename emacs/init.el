@@ -675,6 +675,10 @@
 (use-package go-mode
   :defer t)
 
+;; solana
+(use-package sol-mode
+  :defer t)
+
 ;; ai completion
 (use-package dash
   :defer t)
