@@ -377,9 +377,16 @@
   :bind
   ("C-c g" . magit-status))
 
-(use-package forge
+;; (use-package forge
+;;   :after
+;;   (magit))
+
+(use-package jj-mode
   :after
-  (magit))
+  (magit)
+  :bind
+  ("C-c j" . jj-log)
+  :vc (:url "https://github.com/bolivier/jj-mode.el"))
 
 (use-package diff-hl
   :after
