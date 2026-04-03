@@ -626,51 +626,62 @@
 ;; lang
 ;;; org
 (use-package org
+  :defer t
   :hook
   (org-mode . auto-fill-mode)
   (org-mode . org-indent-mode)
   :config
-  (setopt org-agenda-files (list
-			    (file-truename "~/org/agenda/")))
   (setopt org-agenda-show-future-repeats 'nil)
   (setopt org-agenda-start-with-log-mode 'clockcheck)
   (setopt org-enforce-todo-dependencies t)
   (setopt org-enforce-todo-checkbox-dependencies t)
   (setopt org-log-done 'time)
-  (setq org-capture-templates
-	'(("t" "Todo" entry (file+headline "~/org/agenda/inbox.org" "Inbox")
-           "* TODO %?\n  %i\n  %a")
-	  ("j" "Journal" entry (file+datetree "~/org/agenda/journal.org")
-           "* %?\nEntered on %T\n  %i\n  %a")))
-
+  (add-to-list 'org-agenda-files "~/org/agenda/")
   :bind
   ("C-c o l" . org-store-link)
   ("C-c o a" . org-agenda)
-  ("C-c o c" . org-capture)
-  ("C-c o t" . (lambda () (interactive) (org-capture nil "t")))
-  ("C-c o j" . (lambda () (interactive) (org-capture nil "j"))))
+  ("C-c o c" . org-capture))
 
-(use-package howm
+
+(use-package org-gtd
+  :defer t
+  :after org
   :init
-  ;;
-  ;; Options: Remove the leading ";" in the following lines if you like.
-  ;;
-  ;; Format
-  ;(require 'howm-markdown) ;; Write notes in markdown-mode. (*1)
-  (require 'howm-org) ;; Write notes in Org-mode. (*2)
-  ;;
-  ;; Preferences
-  ;(setq howm-directory "~/Documents/Howm") ;; Where to store the files?
-  ;(setq howm-follow-theme t) ;; Use your Emacs theme colors. (*3)
-  ;;
-  ;; Performance
-  ;(setq howm-menu-expiry-hours 1) ;; Cache menu N hours. (*4)
-  ;(setq howm-menu-refresh-after-save nil) ;; Speed up note saving. (*5)
+  (setq org-gtd-update-ack "3.0.0")
+  :config
+  (setopt org-gtd-directory "~/org/gtd/")
 
-  :custom
-  (howm-directory "~/howm/")
-  (howm-history-file (expand-file-name ".howm-history" howm-directory))
-  (howm-keyword-file (expand-file-name ".howm-keys" howm-directory)))
+  ;; Configure TODO keyword states (options like "TODO(t)" or "DONE(d!)" are fine)
+  (setopt org-todo-keywords '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "CNCL")))
+
+  ;; Map GTD semantic states to your keywords
+  (setopt org-gtd-keyword-mapping '((todo . "TODO")
+                             (next . "NEXT")
+                             (wait . "WAIT")
+                             (canceled . "CNCL")))
+
+  ;; Add org-gtd files to your agenda
+  (add-to-list 'org-agenda-files org-gtd-directory)
+
+  :config
+  ;; REQUIRED: Enable org-edna for project dependencies
+  (org-edna-mode 1)
+
+  :bind
+  ;; Global keybindings (work anywhere in Emacs)
+  (("C-c d c" . org-gtd-capture)
+   ("C-c d e" . org-gtd-engage)
+   ("C-c d p" . org-gtd-process-inbox)
+   ("C-c d n" . org-gtd-show-all-next)
+   ("C-c d s" . org-gtd-reflect-stuck-projects)
+
+   ;; Keybinding for organizing items (only works in clarify buffers)
+   :map org-gtd-clarify-map
+   ("C-c c" . org-gtd-organize)
+
+   ;; Quick actions on tasks in agenda views (optional but recommended)
+   :map org-agenda-mode-map
+   ("C-c ." . org-gtd-agenda-transient)))
 
 ;;; treesit
 (use-package treesit-auto
