@@ -719,7 +719,8 @@
   (global-treesit-auto-mode))
 
 ;;; haskell
-(use-package haskell-mode)
+(use-package haskell-mode
+  :defer t)
 
 ;;; nix
 (use-package nix-mode
