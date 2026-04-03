@@ -423,22 +423,25 @@
 ;;   (magit))
 
 (use-package jj-mode
-  :after
-  (magit)
+  :defer t
   :bind
   ("C-c j" . jj-log)
   :vc (:url "https://github.com/bolivier/jj-mode.el"))
 
+(use-package vc-jj
+  :defer t)
+
 (use-package diff-hl
-  :after
-  (magit)
+  :defer t
   :config
   (global-diff-hl-mode)
-  (diff-hl-dired-mode)
   (diff-hl-flydiff-mode)
+  (diff-hl-margin-mode)
   (diff-hl-show-hunk-mouse-mode)
   :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (find-file . diff-hl-mode)
+  (vc-dir-mode . diff-hl-dir-mode)
+  (dired-mode . diff-hl-dired-mode)
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; Projects/Workspaces
