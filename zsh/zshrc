@@ -48,26 +48,28 @@ SHELL=$(which zsh)
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
 
-# Export TERM
-export TERM=xterm-256color
+# Export TERM only if NOT inside tmux
+if [[ -z "$TMUX" ]]; then
+    export TERM="xterm-256color"
+fi
 
 # Add home opt to path
-path+=('/home/junaid/opt')
+path+=("$HOME/opt")
 
 # Add GPS to path
-path+=('/home/junaid/Research/opt/GNAT/2018/bin')
+path+=("$HOME/Research/opt/GNAT/2018/bin")
 
 # Add Isabelle to path
-path+=('/home/junaid/Research/opt/Isabelle2018/bin')
+path+=("$HOME/Research/opt/Isabelle2018/bin")
 
 # Add local bin
-path+=('/home/junaid/.local/bin')
+path+=("$HOME/.local/bin")
 
 # Add ghcup to path
-path+=('/home/junaid/.ghcup/bin')
+path+=("$HOME/.ghcup/bin")
 
 # Add cabal bin to path
-path+=('/home/junaid/.cabal/bin')
+path+=("$HOME/.cabal/bin")
 
 # direnv hook
 eval "$(direnv hook zsh)"
