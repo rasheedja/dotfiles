@@ -751,39 +751,18 @@
   :defer t)
 
 ;; ai completion
-(use-package dash
-  :defer t)
-
-(use-package minuet
-  :after
-  (dash)
-  :defer t
+(use-package copilot
+  :vc (:url "https://github.com/copilot-emacs/copilot.el"
+            :rev :newest
+            :branch "main")
   :bind
-  (("C-c q" . #'minuet-complete-with-minibuffer)
-   ;; ("C-c q y" . #'minuet-complete-with-minibuffer) ;; use minibuffer for completion
-   ;; ("C-c q i" . #'minuet-show-suggestion) ;; use overlay for completion
-   ;; ("C-c q m" . #'minuet-configure-provider)
-   :map minuet-active-mode-map
-   ;; These keymaps activate only when a minuet suggestion is displayed in the current buffer
-   ("M-p" . #'minuet-previous-suggestion) ;; invoke completion or cycle to next completion
-   ("M-n" . #'minuet-next-suggestion) ;; invoke completion or cycle to previous completion
-   ("C-M-<tab>" . #'minuet-accept-suggestion) ;; accept whole completion
-   ;; Accept the first line of completion, or N lines with a numeric-prefix:
-   ("M-<tab>" . #'minuet-accept-suggestion-line)
-   ("M-e" . #'minuet-dismiss-suggestion))
+  (:map copilot-completion-map)
+  ("<tab>" . copilot-accept-completion)
+  ("TAB" . copilot-accept-completion)
+  ("C-<tab>" . copilot-accept-completion-by-word)
+  ("C-TAB" . copilot-accept-completion-by-word)
   :hook
-  (prog-mode . minuet-auto-suggestion-mode)
-  :config
-  (setq minuet-provider 'openai-fim-compatible)
-  (setq minuet-n-completions 5)
-  (setq minuet-context-window 2048)
-  (plist-put minuet-openai-fim-compatible-options :end-point "http://localhost:11434/v1/completions")
-  (plist-put minuet-openai-fim-compatible-options :name "Ollama")
-  ;; an arbitrary non-null environment variable as placeholder.
-  (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
-  (plist-put minuet-openai-fim-compatible-options :model "qwen2.5-coder:3b")
-  (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 1024)
-  (minuet-set-optional-options minuet-openai-fim-compatible-options :top_p 0.9)
-  ;; don't suggest more than one line
-  ; (minuet-set-optional-options minuet-openai-fim-compatible-options :stop ["\n"])
-  )
+  (prog-mode . copilot-mode))
+
+(provide 'init)
+;;; init.el ends here
