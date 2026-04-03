@@ -306,7 +306,12 @@
   :hook
   (after-init . global-company-mode))
 
+(use-package company-box
+  :hook
+  (company-mode . company-box-mode))
+
 (use-package lsp-mode
+  :defer t
   :init
   ;; lsp booster setup
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
