@@ -16,8 +16,8 @@
   :config
   ;; (setopt use-package-compute-statistics t)
   (setopt use-package-always-ensure t)
-  (setopt use-package-expand-minimally t))
-
+  (setopt use-package-expand-minimally t)
+  (setopt package-native-compile t))
 
 (use-package emacs
   :ensure nil
