@@ -460,10 +460,27 @@
    ("C-c a g" . activities-revert)
    ("C-c a l" . activities-list)))
 
+(use-package projectile
+  :defer t
+  :config
+  (projectile-mode +1)
+  :bind-keymap
+  ("C-x p" . projectile-command-map)
+  :custom
+  (projectile-completion-system 'auto))
+  ;; (projectile-switch-project-action #'projectile-dired))
+
+(use-package flycheck-projectile
+  :defer t
+  :after
+  (projectile flycheck))
+
 (use-package treemacs
+  :defer t
   :commands treemacs)
 
 (use-package treemacs-magit
+  :defer t
   :after
   (treemacs))
 
@@ -580,7 +597,7 @@
   (setopt dashboard-icon-type 'nerd-icons)
   (setopt dashboard-set-heading-icons t)
   (setopt dashboard-set-file-icons t)
-  (setopt dashboard-projects-backend 'project-el)
+  (setopt dashboard-projects-backend 'projectile)
   (setopt dashboard-display-icons-p t)
   (setopt dashboard-items '((recents   . 5)
 			    (bookmarks  . 5)
