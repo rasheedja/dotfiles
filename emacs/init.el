@@ -345,12 +345,21 @@
 	 (javascript-mode . lsp-deferred)
 	 (yaml-mode . lsp-deferred)
 	 (terraform-mode . lsp-deferred)
+	 (python-mode . lsp-deferred)
+	 (go-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
-(use-package lsp-ui)
+(use-package lsp-ui
+  :defer t
+  :hook (lsp-mode . lsp-ui-mode))
 
-(use-package lsp-treemacs)
+(use-package lsp-treemacs
+  :defer t
+  :after
+  (lsp-mode treemacs)
+  :config
+  (lsp-treemacs-sync-mode 1))
 
 (use-package flycheck
   :hook (after-init . global-flycheck-mode))
