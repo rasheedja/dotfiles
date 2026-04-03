@@ -47,6 +47,12 @@ SHELL=$(which zsh)
 # Aliases
 alias vimrc="vim ~/.vimrc"
 alias zshrc="vim ~/.zshrc"
+alias e="emacsclient -t -a ''"
+alias eg="emacsclient -c -a ''"
+
+# Editor
+export VISUAL="emacsclient -t -a ''"
+export EDITOR="$VISUAL"
 
 # Export TERM only if NOT inside tmux
 if [[ -z "$TMUX" ]]; then
