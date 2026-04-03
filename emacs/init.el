@@ -615,7 +615,9 @@
   :config
   (global-hl-todo-mode))
 
-(use-package wgrep)
+(use-package wgrep
+  :bind
+  ("C-c w" . wgrep-change-to-wgrep-mode))
 
 (use-package envrc
   :config
