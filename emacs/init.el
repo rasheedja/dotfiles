@@ -34,6 +34,32 @@
     (interactive)
     (move-end-of-line 1)
     (newline-and-indent))
+
+  (defun term-mode-setup (&optional frame)
+    "Setup emacs for terminal frames."
+    (let ((target-frame (or frame (selected-frame))))
+      (unless (display-graphic-p target-frame)
+	(with-selected-frame target-frame
+	  (xterm-mouse-mode 1)
+	  (menu-bar-mode -1)
+	  (use-package kkp
+	    :config
+	    (global-kkp-mode))
+	  (define-key input-decode-map "\e[127;2u" (kbd "S-<backspace>"))
+	  (define-key input-decode-map "\e[127;3u" (kbd "M-<backspace>"))
+	  (define-key input-decode-map "\e[127;4u" (kbd "M-S-<backspace>"))
+	  (define-key input-decode-map "\e[127;5u" (kbd "C-<backspace>"))
+	  (define-key input-decode-map "\e[127;6u" (kbd "C-S-<backspace>"))
+	  (define-key input-decode-map "\e[127;7u" (kbd "C-M-<backspace>"))
+	  (define-key input-decode-map "\e[127;8u" (kbd "C-M-S-<backspace>"))))))
+
+  (defun dynamic-line-numbers ()
+    "Switch to relative line numbers only when prefix arg is active."
+    ;; only act if line numbers are enabled
+    (when (bound-and-true-p display-line-numbers)
+      (setq display-line-numbers
+	    (if prefix-arg 'relative t))))
+
   
   ;; Add prompt indicator to `completing-read-multiple'.
   ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
@@ -80,7 +106,7 @@
   :config
   (setopt minibuffer-prompt-properties
 	  '(read-only t cursor-intangible t face minibuffer-prompt))
-  (setopt display-line-numbers-type 'relative)
+  (setopt display-line-numbers-type t)
   (setopt enable-recursive-minibuffers t)
   (setopt minibuffer-depth-indicate-mode t)
   ;; Hide commands in M-x which do not work in the current mode
@@ -107,7 +133,10 @@
   :hook
   (minibuffer-setup . cursor-intangible-mode)
   (prog-mode . display-line-numbers-mode)
-  (org-mode . display-line-numbers-mode))
+  (org-mode . display-line-numbers-mode)
+  (tty-setup . term-mode-setup)
+  (after-make-frame-functions . term-mode-setup)
+  (post-command . dynamic-line-numbers))
 
 ;; Completion
 ;;; minibuffer
