@@ -71,6 +71,9 @@ path+=("$HOME/.ghcup/bin")
 # Add cabal bin to path
 path+=("$HOME/.cabal/bin")
 
+# Add aiken to path
+path+=("$HOME/.aiken/bin")
+
 # direnv hook
 eval "$(direnv hook zsh)"
 
