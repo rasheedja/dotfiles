@@ -411,9 +411,9 @@
   :config
   (which-key-mode))
 
-(use-package eat
+(use-package ghostel
   :bind
-  ("C-c t" . eat))
+  ("C-c t" . ghostel))
 
 ;; vc
 (use-package magit
