@@ -428,7 +428,9 @@
   :defer t
   :bind
   ("C-c j" . jj-log)
-  :vc (:url "https://github.com/bolivier/jj-mode.el"))
+  :vc (:url "https://github.com/bolivier/jj-mode.el"
+       :branch "main"
+       :rev "latest"))
 
 (use-package vc-jj
   :defer t)
