@@ -3,6 +3,7 @@
 
 ;; Config
 (setenv "LSP_USE_PLISTS" "true")
+;; (setq ns-use-native-fullscreen t)
 
 ;; Packages
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -100,6 +101,7 @@
 					; (load-theme 'modus-vivendi)
   (scroll-bar-mode -1)
   (column-number-mode 't)
+  (tool-bar-mode -1)
   :bind
   ("C-<return>" . insert-line-below)
   ("C-S-<return>" . insert-line-above)
