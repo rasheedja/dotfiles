@@ -646,47 +646,6 @@
   ("C-c o a" . org-agenda)
   ("C-c o c" . org-capture))
 
-
-(use-package org-gtd
-  :defer t
-  :after org
-  :init
-  (setq org-gtd-update-ack "3.0.0")
-  :config
-  (setopt org-gtd-directory "~/org/gtd/")
-
-  ;; Configure TODO keyword states (options like "TODO(t)" or "DONE(d!)" are fine)
-  (setopt org-todo-keywords '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "CNCL")))
-
-  ;; Map GTD semantic states to your keywords
-  (setopt org-gtd-keyword-mapping '((todo . "TODO")
-                             (next . "NEXT")
-                             (wait . "WAIT")
-                             (canceled . "CNCL")))
-
-  ;; Add org-gtd files to your agenda
-  (add-to-list 'org-agenda-files org-gtd-directory)
-
-  :config
-  ;; REQUIRED: Enable org-edna for project dependencies
-  (org-edna-mode 1)
-
-  :bind
-  ;; Global keybindings (work anywhere in Emacs)
-  (("C-c d c" . org-gtd-capture)
-   ("C-c d e" . org-gtd-engage)
-   ("C-c d p" . org-gtd-process-inbox)
-   ("C-c d n" . org-gtd-show-all-next)
-   ("C-c d s" . org-gtd-reflect-stuck-projects)
-
-   ;; Keybinding for organizing items (only works in clarify buffers)
-   :map org-gtd-clarify-map
-   ("C-c c" . org-gtd-organize)
-
-   ;; Quick actions on tasks in agenda views (optional but recommended)
-   :map org-agenda-mode-map
-   ("C-c ." . org-gtd-agenda-transient)))
-
 ;;; treesit
 (use-package treesit-auto
   :defer t
