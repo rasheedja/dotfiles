@@ -765,6 +765,29 @@
 (use-package sol-mode
   :defer t)
 
+;; ts
+(use-package typescript-ts-mode
+  :defer t
+  :mode
+  ("\\.ts\\'" . typescript-ts-mode)
+  ("\\.tsx\\'" . tsx-ts-mode))
+
+;; aiken
+(use-package aiken-mode
+  :defer t
+  :vc (:url "https://github.com/aiken-lang/aiken-mode"
+	    :rev :newest
+	    :branch "master")
+  :init
+  (with-eval-after-load 'lsp-mode
+    (add-to-list 'lsp-language-id-configuration '(aiken-mode . "aiken"))
+    (lsp-register-client
+     (make-lsp-client
+      :new-connection (lsp-stdio-connection '("aiken" "lsp"))
+      :major-modes '(aiken-mode)
+      :server-id 'aiken-lsp)))
+  :hook (aiken-mode . lsp-deferred))
+
 ;; ai completion
 (use-package copilot
   :vc (:url "https://github.com/copilot-emacs/copilot.el"
