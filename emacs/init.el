@@ -747,19 +747,19 @@
       :server-id 'aiken-lsp)))
   :hook (aiken-mode . lsp-deferred))
 
-;; ai completion
-(use-package copilot
-  :vc (:url "https://github.com/copilot-emacs/copilot.el"
-            :rev :newest
-            :branch "main")
-  :bind
-  (:map copilot-completion-map)
-  ("<tab>" . copilot-accept-completion)
-  ("TAB" . copilot-accept-completion)
-  ("C-<tab>" . copilot-accept-completion-by-word)
-  ("C-TAB" . copilot-accept-completion-by-word)
-  :hook
-  (prog-mode . copilot-mode))
+;; ai tools
+(use-package agent-shell
+  :ensure t
+  ;; ensure 
+    :ensure-system-package
+    ;; Add agent installation configs here
+    ((claude . "brew install claude-code")
+     (claude-agent-acp . "npm install -g @agentclientprotocol/claude-agent-acp"))
+    :config
+    (setq agent-shell-anthropic-authentication
+      (agent-shell-anthropic-make-authentication :login t)))
+
+(use-package eca)
 
 (provide 'init)
 ;;; init.el ends here
