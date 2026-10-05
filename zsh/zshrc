@@ -50,6 +50,11 @@ alias zshrc="vim ~/.zshrc"
 alias e="emacsclient -t -a ''"
 alias eg="emacsclient -c -a ''"
 
+# Pi sandbox: pi runs in a container, so the host is only reachable through
+# the mounts pi-sbx declares. Modes are `pi-sbx` (dev), `pi-sbx aws`
+# (read-only) and `pi-sbx aws-write` (read-write, prompts on).
+alias sbx="$HOME/Documents/personal/git/dotfiles/pi/sandbox/pi-sbx"
+
 # Editor
 export VISUAL="emacsclient -t -a ''"
 export EDITOR="$VISUAL"
