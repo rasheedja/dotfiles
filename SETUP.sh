@@ -21,6 +21,7 @@ ln -sfr emacs/init.el ~/.config/emacs/init.el
 mkdir -p ~/.pi/agent/extensions/pi-permission-system
 mkdir -p ~/.pi/agent/extensions/pi-permission-classifier
 ln -sfr pi/agent/settings.json ~/.pi/agent/settings.json
+ln -sfr pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
 ln -sfr pi/agent/extensions/pi-permission-system/config.json ~/.pi/agent/extensions/pi-permission-system/config.json
 ln -sfr pi/agent/extensions/pi-permission-classifier/config.json ~/.pi/agent/extensions/pi-permission-classifier/config.json
 
