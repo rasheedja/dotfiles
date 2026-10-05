@@ -25,6 +25,16 @@ ln -sfr pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
 ln -sfr pi/agent/extensions/pi-permission-system/config.json ~/.pi/agent/extensions/pi-permission-system/config.json
 ln -sfr pi/agent/extensions/pi-permission-classifier/config.json ~/.pi/agent/extensions/pi-permission-classifier/config.json
 
+## Slack
+# The slack tools extension (slack_whoami, slack_channels, slack_history,
+# slack_replies, slack_search, slack_post). The file lives in the sandbox tree
+# because the sandbox mounts that directory directly; the host reaches the same
+# file through this symlink, so there is one copy rather than two. It reads a
+# user token from ~/.config/slack/token, which is not tracked: create it with
+# the xoxp- token from a Slack app you installed.
+ln -sfr pi/sandbox/agent/extensions/slack.ts ~/.pi/agent/extensions/slack.ts
+mkdir -p ~/.config/slack && chmod 700 ~/.config/slack
+
 ## Herdr
 # The pi integration is what reports working/blocked/idle to herdr's sidebar.
 # Herdr generates the file it installs and rewrites it on update, so it is not
