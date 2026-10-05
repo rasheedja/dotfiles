@@ -25,6 +25,12 @@ ln -sfr pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
 ln -sfr pi/agent/extensions/pi-permission-system/config.json ~/.pi/agent/extensions/pi-permission-system/config.json
 ln -sfr pi/agent/extensions/pi-permission-classifier/config.json ~/.pi/agent/extensions/pi-permission-classifier/config.json
 
+## Herdr
+# The pi integration is what reports working/blocked/idle to herdr's sidebar.
+# Herdr generates the file it installs and rewrites it on update, so it is not
+# tracked here; reinstalling is the way to restore it.
+command -v herdr >/dev/null 2>&1 && herdr integration install pi
+
 ## Doom
 # mkdir -p ~/.config/doom/
 # ln -sfr doom/init.el ~/.config/doom/init.el
