@@ -18,12 +18,26 @@ ln -sfr emacs/init.el ~/.config/emacs/init.el
 ## Pi coding agent
 # Symlink the durable config only. auth.json, sessions/, npm/ and bin/ stay
 # local and are ignored by pi/.gitignore.
-mkdir -p ~/.pi/agent/extensions/pi-permission-system
-mkdir -p ~/.pi/agent/extensions/pi-permission-classifier
 ln -sfr pi/agent/settings.json ~/.pi/agent/settings.json
 ln -sfr pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
-ln -sfr pi/agent/extensions/pi-permission-system/config.json ~/.pi/agent/extensions/pi-permission-system/config.json
-ln -sfr pi/agent/extensions/pi-permission-classifier/config.json ~/.pi/agent/extensions/pi-permission-classifier/config.json
+
+# Symlink the extension DIRECTORIES, not their config files. Both extensions
+# persist config by writing a temp file and renaming it over the target, and a
+# rename replaces a file symlink with a regular file -- which is how the host
+# config silently stopped tracking the repo. Through a directory symlink the
+# rename lands inside the repo, so a TUI change becomes a repo change.
+mkdir -p ~/.pi/agent/extensions
+for d in pi-permission-system pi-permission-classifier; do
+  ext="$HOME/.pi/agent/extensions/$d"
+  # An older setup made this a real directory with a linked config inside.
+  if [ -e "$ext" ] && [ ! -L "$ext" ]; then
+    mkdir -p "pi/agent/extensions/$d"
+    rm -f "$ext/config.json"
+    [ -d "$ext/logs" ] && mv -f "$ext/logs" "pi/agent/extensions/$d/logs" 2>/dev/null
+    rmdir "$ext" 2>/dev/null || echo "SETUP: could not replace $ext with a symlink" >&2
+  fi
+  ln -sfnr "pi/agent/extensions/$d" "$ext"
+done
 
 ## Slack
 # The slack tools extension (slack_whoami, slack_channels, slack_history,
