@@ -15,6 +15,15 @@ ln -sfr zsh/zshrc ~/.zshrc
 ln -sfr tmux/tmux.conf ~/.tmux.conf
 ln -sfr emacs/init.el ~/.config/emacs/init.el
 
+## Pi coding agent
+# Symlink the durable config only. auth.json, sessions/, npm/ and bin/ stay
+# local and are ignored by pi/.gitignore.
+mkdir -p ~/.pi/agent/extensions/pi-permission-system
+mkdir -p ~/.pi/agent/extensions/pi-permission-classifier
+ln -sfr pi/agent/settings.json ~/.pi/agent/settings.json
+ln -sfr pi/agent/extensions/pi-permission-system/config.json ~/.pi/agent/extensions/pi-permission-system/config.json
+ln -sfr pi/agent/extensions/pi-permission-classifier/config.json ~/.pi/agent/extensions/pi-permission-classifier/config.json
+
 ## Doom
 # mkdir -p ~/.config/doom/
 # ln -sfr doom/init.el ~/.config/doom/init.el
