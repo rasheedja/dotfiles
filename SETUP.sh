@@ -55,6 +55,12 @@ mkdir -p ~/.config/slack && chmod 700 ~/.config/slack
 # tracked here; reinstalling is the way to restore it.
 command -v herdr >/dev/null 2>&1 && herdr integration install pi
 
+# The integration listens for a `herdr:blocked` event that nothing emits. The
+# permission system broadcasts `permissions:ui_prompt` / `permissions:decision`
+# instead, so without this bridge a pi waiting on a permission dialog reports
+# idle and raises no notification.
+ln -sfr pi/agent/extensions/herdr-blocked-bridge.ts ~/.pi/agent/extensions/herdr-blocked-bridge.ts
+
 ## Doom
 # mkdir -p ~/.config/doom/
 # ln -sfr doom/init.el ~/.config/doom/init.el
