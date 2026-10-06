@@ -49,6 +49,11 @@ done
 ln -sfr pi/sandbox/agent/extensions/slack.ts ~/.pi/agent/extensions/slack.ts
 mkdir -p ~/.config/slack && chmod 700 ~/.config/slack
 
+## Doom-loop guard
+# Asks before the third identical tool call in a row. Same file in both trees,
+# by the same reasoning as Slack above.
+ln -sfr pi/sandbox/agent/extensions/doom-loop.ts ~/.pi/agent/extensions/doom-loop.ts
+
 ## Herdr
 # The pi integration is what reports working/blocked/idle to herdr's sidebar.
 # Herdr generates the file it installs and rewrites it on update, so it is not
