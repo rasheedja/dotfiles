@@ -10,16 +10,16 @@ snap install emacs --classic
 chsh -s "$(which zsh)"
 
 # Create symlinks for config files
-ln -sfr vim/vimrc ~/.vimrc
-ln -sfr zsh/zshrc ~/.zshrc
-ln -sfr tmux/tmux.conf ~/.tmux.conf
-ln -sfr emacs/init.el ~/.config/emacs/init.el
+ln -sfn "$PWD/vim/vimrc" ~/.vimrc
+ln -sfn "$PWD/zsh/zshrc" ~/.zshrc
+ln -sfn "$PWD/tmux/tmux.conf" ~/.tmux.conf
+ln -sfn "$PWD/emacs/init.el" ~/.config/emacs/init.el
 
 ## Pi coding agent
 # Symlink the durable config only. auth.json, sessions/, npm/ and bin/ stay
 # local and are ignored by pi/.gitignore.
-ln -sfr pi/agent/settings.json ~/.pi/agent/settings.json
-ln -sfr pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
+ln -sfn "$PWD/pi/agent/settings.json" ~/.pi/agent/settings.json
+ln -sfn "$PWD/pi/agent/AGENTS.md" ~/.pi/agent/AGENTS.md
 
 # Symlink the extension DIRECTORIES, not their config files. Both extensions
 # persist config by writing a temp file and renaming it over the target, and a
@@ -36,7 +36,7 @@ for d in pi-permission-system pi-permission-classifier; do
     [ -d "$ext/logs" ] && mv -f "$ext/logs" "pi/agent/extensions/$d/logs" 2>/dev/null
     rmdir "$ext" 2>/dev/null || echo "SETUP: could not replace $ext with a symlink" >&2
   fi
-  ln -sfnr "pi/agent/extensions/$d" "$ext"
+  ln -sfn "$PWD/pi/agent/extensions/$d" "$ext"
 done
 
 ## Slack
@@ -46,13 +46,13 @@ done
 # file through this symlink, so there is one copy rather than two. It reads a
 # user token from ~/.config/slack/token, which is not tracked: create it with
 # the xoxp- token from a Slack app you installed.
-ln -sfr pi/sandbox/agent/extensions/slack.ts ~/.pi/agent/extensions/slack.ts
+ln -sfn "$PWD/pi/sandbox/agent/extensions/slack.ts" ~/.pi/agent/extensions/slack.ts
 mkdir -p ~/.config/slack && chmod 700 ~/.config/slack
 
 ## Doom-loop guard
 # Asks before the third identical tool call in a row. Same file in both trees,
 # by the same reasoning as Slack above.
-ln -sfr pi/sandbox/agent/extensions/doom-loop.ts ~/.pi/agent/extensions/doom-loop.ts
+ln -sfn "$PWD/pi/sandbox/agent/extensions/doom-loop.ts" ~/.pi/agent/extensions/doom-loop.ts
 
 ## Herdr
 # The pi integration is what reports working/blocked/idle to herdr's sidebar.
@@ -64,14 +64,14 @@ command -v herdr >/dev/null 2>&1 && herdr integration install pi
 # permission system broadcasts `permissions:ui_prompt` / `permissions:decision`
 # instead, so without this bridge a pi waiting on a permission dialog reports
 # idle and raises no notification.
-ln -sfr pi/agent/extensions/herdr-blocked-bridge.ts ~/.pi/agent/extensions/herdr-blocked-bridge.ts
+ln -sfn "$PWD/pi/agent/extensions/herdr-blocked-bridge.ts" ~/.pi/agent/extensions/herdr-blocked-bridge.ts
 
 ## Doom
 # mkdir -p ~/.config/doom/
-# ln -sfr doom/init.el ~/.config/doom/init.el
-# ln -sfr doom/packages.el ~/.config/doom/packages.el
-# ln -sfr doom/config.el ~/.config/doom/config.el
-# ln -sfr doom/custom.el ~/.config/doom/custom.el
+# ln -sfn "$PWD/doom/init.el" ~/.config/doom/init.el
+# ln -sfn "$PWD/doom/packages.el" ~/.config/doom/packages.el
+# ln -sfn "$PWD/doom/config.el" ~/.config/doom/config.el
+# ln -sfn "$PWD/doom/custom.el" ~/.config/doom/custom.el
 
 # Install antigen
 curl -L git.io/antigen >~/.antigen.zsh
