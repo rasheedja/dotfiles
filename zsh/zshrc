@@ -54,7 +54,7 @@ alias eg="emacsclient -c -a ''"
 # the mounts pi-sbx declares. `sbx` is the normal sandbox, which can read AWS;
 # `sbx aws` additionally lets AWS changes run without asking, for deploys and
 # teardowns. Everything else is the same in both.
-alias sbx="$HOME/Documents/personal/git/dotfiles/pi/sandbox/pi-sbx"
+alias sbx="$HOME/Documents/personal/git/pi-config/sandbox/pi-sbx"
 
 # pi-background-tasks registers shell jobs, a delegated agent, multi-model
 # Fusion, attested runs and Anthropic attribution, all on by default. Only the

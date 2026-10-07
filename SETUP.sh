@@ -16,10 +16,17 @@ ln -sfn "$PWD/tmux/tmux.conf" ~/.tmux.conf
 ln -sfn "$PWD/emacs/init.el" ~/.config/emacs/init.el
 
 ## Pi coding agent
+# Pi's config lives in its own private repo, cloned alongside this one. The
+# sandbox mount list and the permission policy describe this machine -- which
+# credentials are bound in, where the repos live, how the policy is wired --
+# rather than the operator's preferences, so they do not belong in a public
+# repo. SETUP: clone rasheedja/pi-config to the path below first.
+PI_CONFIG="${PI_CONFIG:-$HOME/Documents/personal/git/pi-config}"
+
 # Symlink the durable config only. auth.json, sessions/, npm/ and bin/ stay
 # local and are ignored by pi/.gitignore.
-ln -sfn "$PWD/pi/agent/settings.json" ~/.pi/agent/settings.json
-ln -sfn "$PWD/pi/agent/AGENTS.md" ~/.pi/agent/AGENTS.md
+ln -sfn "$PI_CONFIG/agent/settings.json" ~/.pi/agent/settings.json
+ln -sfn "$PI_CONFIG/agent/AGENTS.md" ~/.pi/agent/AGENTS.md
 
 # Symlink the extension DIRECTORIES, not their config files. Both extensions
 # persist config by writing a temp file and renaming it over the target, and a
@@ -31,12 +38,12 @@ for d in pi-permission-system pi-permission-classifier; do
   ext="$HOME/.pi/agent/extensions/$d"
   # An older setup made this a real directory with a linked config inside.
   if [ -e "$ext" ] && [ ! -L "$ext" ]; then
-    mkdir -p "pi/agent/extensions/$d"
+    mkdir -p "$PI_CONFIG/agent/extensions/$d"
     rm -f "$ext/config.json"
-    [ -d "$ext/logs" ] && mv -f "$ext/logs" "pi/agent/extensions/$d/logs" 2>/dev/null
+    [ -d "$ext/logs" ] && mv -f "$ext/logs" "$PI_CONFIG/agent/extensions/$d/logs" 2>/dev/null
     rmdir "$ext" 2>/dev/null || echo "SETUP: could not replace $ext with a symlink" >&2
   fi
-  ln -sfn "$PWD/pi/agent/extensions/$d" "$ext"
+  ln -sfn "$PI_CONFIG/agent/extensions/$d" "$ext"
 done
 
 ## Slack
@@ -46,13 +53,13 @@ done
 # file through this symlink, so there is one copy rather than two. It reads a
 # user token from ~/.config/slack/token, which is not tracked: create it with
 # the xoxp- token from a Slack app you installed.
-ln -sfn "$PWD/pi/sandbox/agent/extensions/slack.ts" ~/.pi/agent/extensions/slack.ts
+ln -sfn "$PI_CONFIG/sandbox/agent/extensions/slack.ts" ~/.pi/agent/extensions/slack.ts
 mkdir -p ~/.config/slack && chmod 700 ~/.config/slack
 
 ## Doom-loop guard
 # Asks before the third identical tool call in a row. Same file in both trees,
 # by the same reasoning as Slack above.
-ln -sfn "$PWD/pi/sandbox/agent/extensions/doom-loop.ts" ~/.pi/agent/extensions/doom-loop.ts
+ln -sfn "$PI_CONFIG/sandbox/agent/extensions/doom-loop.ts" ~/.pi/agent/extensions/doom-loop.ts
 
 ## Herdr
 # The pi integration is what reports working/blocked/idle to herdr's sidebar.
@@ -64,7 +71,7 @@ command -v herdr >/dev/null 2>&1 && herdr integration install pi
 # permission system broadcasts `permissions:ui_prompt` / `permissions:decision`
 # instead, so without this bridge a pi waiting on a permission dialog reports
 # idle and raises no notification.
-ln -sfn "$PWD/pi/agent/extensions/herdr-blocked-bridge.ts" ~/.pi/agent/extensions/herdr-blocked-bridge.ts
+ln -sfn "$PI_CONFIG/agent/extensions/herdr-blocked-bridge.ts" ~/.pi/agent/extensions/herdr-blocked-bridge.ts
 
 ## Doom
 # mkdir -p ~/.config/doom/
