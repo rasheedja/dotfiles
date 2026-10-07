@@ -575,21 +575,32 @@
   :config
   (minions-mode))
 
-(use-package nerd-icons
-  ;; nerd-icons builds its fontset per frame, named after that frame's own
-  ;; font. A daemon has no frame when init.el runs, so for frames created
-  ;; later it is never built, and that frame falls back to the default
-  ;; fontset, which does not resolve the supplementary-plane ranges. No
-  ;; visible symptom was confirmed from this, so treat it as closing a
-  ;; daemon/non-daemon gap. See the commit for the measurements.
-  :config
-  (defun rf-nerd-icons-font ()
-    "Set up the Nerd Font mappings for the current frame."
-    (when (display-graphic-p)
-      (nerd-icons-set-font)
-      (set-fontset-font t '(#xf0000 . #xffffd) "Symbols Nerd Font Mono" nil 'prepend)))
-  (rf-nerd-icons-font)
-  (add-hook 'server-after-make-frame-hook #'rf-nerd-icons-font))
+;; Nerd Font codepoint ranges, as nerd-icons defines them. Mapped here rather
+;; than inside a use-package body because the pi TUI emits these codepoints
+;; itself and needs only the fontset -- pi's icons then render whether or not
+;; nerd-icons is loaded, which matters because doom-modeline hard-requires it
+;; and pays ~250ms at startup for its own icons.
+;;
+;; A daemon has no frame when init.el runs, so map per frame as well as now.
+(defconst rf-nerd-font-ranges
+  '((#xe5fa . #xe6bb) (#xe700 . #xe958) (#xed00 . #xf2ff) (#xe200 . #xe2a9)
+    (#xf500 . #xfd46) (#xf0001 . #xf1af0) (#xe300 . #xe3e3) (#xf400 . #xf533)
+    #x2665 #x26a1 (#xe0a0 . #xe0a3) (#xe0b0 . #xe0d7) (#x23fb . #x23fe) #x2b58
+    (#xf300 . #xf385) (#xe000 . #xe00a) (#xea60 . #xec84))
+  "Nerd Font codepoint ranges, matching nerd-icons' own charset table.")
+
+(defun rf-nerd-font (&optional frame)
+  "Map `rf-nerd-font-ranges' for FRAME, defaulting to the selected one."
+  (let ((f (or frame (selected-frame))))
+    (when (and (frame-live-p f) (display-graphic-p f))
+      (with-selected-frame f
+        (dolist (range rf-nerd-font-ranges)
+          (set-fontset-font t range "Symbols Nerd Font Mono" f 'prepend))))))
+
+(rf-nerd-font)
+(add-hook 'server-after-make-frame-hook #'rf-nerd-font)
+
+(use-package nerd-icons)
 
 (use-package treemacs-nerd-icons
   :after
