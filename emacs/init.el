@@ -575,7 +575,21 @@
   :config
   (minions-mode))
 
-(use-package nerd-icons)
+(use-package nerd-icons
+  ;; nerd-icons builds its fontset per frame, named after that frame's own
+  ;; font. A daemon has no frame when init.el runs, so for frames created
+  ;; later it is never built, and that frame falls back to the default
+  ;; fontset, which does not resolve the supplementary-plane ranges. No
+  ;; visible symptom was confirmed from this, so treat it as closing a
+  ;; daemon/non-daemon gap. See the commit for the measurements.
+  :config
+  (defun rf-nerd-icons-font ()
+    "Set up the Nerd Font mappings for the current frame."
+    (when (display-graphic-p)
+      (nerd-icons-set-font)
+      (set-fontset-font t '(#xf0000 . #xffffd) "Symbols Nerd Font Mono" nil 'prepend)))
+  (rf-nerd-icons-font)
+  (add-hook 'server-after-make-frame-hook #'rf-nerd-icons-font))
 
 (use-package treemacs-nerd-icons
   :after
