@@ -56,6 +56,16 @@ alias eg="emacsclient -c -a ''"
 # teardowns. Everything else is the same in both.
 alias sbx="$HOME/Documents/personal/git/dotfiles/pi/sandbox/pi-sbx"
 
+# pi-background-tasks registers shell jobs, a delegated agent, multi-model
+# Fusion, attested runs and Anthropic attribution, all on by default. Only the
+# shell jobs and Fusion add anything over @gotgenes/pi-subagents, which already
+# owns delegation -- keeping `delegate` here would register a second way to
+# spawn a child agent, for the same read-only investigation it already does.
+# `process` is mandatory in the set, so it cannot be dropped. This is the only
+# lever the package offers: it reads the variable at each extension activation,
+# including a real /reload.
+export PI_BG_FEATURES="process,fusion,attested,attribution"
+
 # Editor
 export VISUAL="emacsclient -t -a ''"
 export EDITOR="$VISUAL"
@@ -99,3 +109,6 @@ source <(COMPLETE=zsh jj)
 
 # rust
 . "$HOME/.cargo/env"
+
+# bun completions
+[ -s "/Users/junaid/.bun/_bun" ] && source "/Users/junaid/.bun/_bun"
