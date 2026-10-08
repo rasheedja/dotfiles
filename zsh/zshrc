@@ -56,6 +56,11 @@ alias eg="emacsclient -c -a ''"
 # teardowns. Everything else is the same in both.
 alias sbx="$HOME/Documents/personal/git/pi-config/sandbox/pi-sbx"
 
+# Put the macOS clipboard somewhere a sandbox session can read it. A container
+# cannot reach the host clipboard, so the paste happens on the host and lands in
+# /private/tmp, which pi-sbx mounts at the same path.
+alias sbx-paste="$HOME/Documents/personal/git/pi-config/sandbox/sbx-paste"
+
 # pi-background-tasks registers shell jobs, a delegated agent, multi-model
 # Fusion, attested runs and Anthropic attribution, all on by default. Only the
 # shell jobs and Fusion add anything over @gotgenes/pi-subagents, which already
