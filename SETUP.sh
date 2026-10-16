@@ -27,6 +27,7 @@ PI_CONFIG="${PI_CONFIG:-$HOME/Documents/personal/git/pi-config}"
 # local and are ignored by pi/.gitignore.
 ln -sfn "$PI_CONFIG/agent/settings.json" ~/.pi/agent/settings.json
 ln -sfn "$PI_CONFIG/agent/AGENTS.md" ~/.pi/agent/AGENTS.md
+ln -sfn "$PI_CONFIG/agent/keybindings.json" ~/.pi/agent/keybindings.json
 
 # Symlink the extension DIRECTORIES, not their config files. Both extensions
 # persist config by writing a temp file and renaming it over the target, and a
