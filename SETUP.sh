@@ -73,6 +73,7 @@ command -v herdr >/dev/null 2>&1 && herdr integration install pi
 # instead, so without this bridge a pi waiting on a permission dialog reports
 # idle and raises no notification.
 ln -sfn "$PI_CONFIG/agent/extensions/herdr-blocked-bridge.ts" ~/.pi/agent/extensions/herdr-blocked-bridge.ts
+ln -sfn "$PI_CONFIG/agent/extensions/claude-usage.ts" ~/.pi/agent/extensions/claude-usage.ts
 
 ## Doom
 # mkdir -p ~/.config/doom/
