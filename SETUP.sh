@@ -27,6 +27,11 @@ PI_CONFIG="${PI_CONFIG:-$HOME/Documents/personal/git/pi-config}"
 # local and are ignored by pi/.gitignore.
 ln -sfn "$PI_CONFIG/agent/settings.json" ~/.pi/agent/settings.json
 ln -sfn "$PI_CONFIG/agent/AGENTS.md" ~/.pi/agent/AGENTS.md
+
+# Agent definitions. general-purpose.md overrides the built-in so subagents get
+# the pi-lens tools; a directory symlink, like the extensions, so pi writing a
+# file here lands in the repo.
+ln -sfn "$PI_CONFIG/agent/agents" ~/.pi/agent/agents
 ln -sfn "$PI_CONFIG/agent/keybindings.json" ~/.pi/agent/keybindings.json
 
 # Symlink the extension DIRECTORIES, not their config files. Both extensions
